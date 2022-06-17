@@ -6,14 +6,14 @@ def main():
 
     Quando o bot inicia:
         1 - Devesse abrir o navegador
-        2 - Pesquisar o PacMan de navegador
+        2 - Pesquisar o Pong de navegador
         3 - Comecar a Rede Neural
     Returns:
         _type_: _description_
     """
 
     iniciar_Navegador()
-    
+
     # jogar()
 
     return 0
