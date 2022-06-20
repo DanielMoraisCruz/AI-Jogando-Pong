@@ -1,5 +1,3 @@
-from navegador import iniciar_Navegador
-
 
 def main():
     """Funcao de inicializacao
@@ -11,11 +9,6 @@ def main():
     Returns:
         _type_: _description_
     """
-
-    iniciar_Navegador()
-
-    # jogar()
-
     return 0
 
 
