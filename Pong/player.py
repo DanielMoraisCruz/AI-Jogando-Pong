@@ -9,7 +9,7 @@ class Player:
         self.imagem.fill(BRANCO)
         self.imagem_retangulo = self.imagem.get_rect()
         self.velicidade = velicidade
-        self.imagem_retangulo[0] = 20
+        self.imagem_retangulo[0] = 1
 
     def move(self, x, y):
         self.imagem_retangulo[0] += x * self.velicidade
