@@ -1,0 +1,10 @@
+import pygame
+
+global PRETO, BRANCO, FIM, TAMANHO_TELA, TELA, TELA_RETANGULO
+PRETO = 0, 0, 0
+BRANCO = 255, 255, 255
+
+
+TAMANHO_TELA = 800, 600
+TELA = pygame.display.set_mode(TAMANHO_TELA)
+TELA_RETANGULO = TELA.get_rect()
