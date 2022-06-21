@@ -1,6 +1,6 @@
 import pygame
 
-from globais import BRANCO, TELA_RETANGULO, TELA
+from globais import BRANCO, TELA, TELA_RETANGULO
 
 
 class Player:

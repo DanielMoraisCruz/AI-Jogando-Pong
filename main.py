@@ -1,14 +1,17 @@
+from Pong.run import run_Pong
+
 
 def main():
     """Funcao de inicializacao
 
     Quando o bot inicia:
-        1 - Devesse abrir o navegador
-        2 - Pesquisar o Pong de navegador
-        3 - Comecar a Rede Neural
+        1 - Abre Pong
+        2 - Comecar a Rede Neural
     Returns:
         _type_: _description_
     """
+    run_Pong()
+
     return 0
 
 

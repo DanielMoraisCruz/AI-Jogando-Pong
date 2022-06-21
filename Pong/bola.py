@@ -46,13 +46,16 @@ class Bola:
         if self.imagem_retangulo.x < 0 or right_largura:
             self.velo[0] *= -1
 
+            if right_largura:
+                self.placar.pontos += 1
+
             if self.imagem_retangulo.x < 0:
                 self.placar.pontos -= 1
 
     def colide_player(self, player):
         ajuste = (player[0], player[1], player[2]+1, player[3]+1)
         if self.imagem_retangulo.colliderect(ajuste):
-            self.placar.pontos += 1
+            # self.placar.pontos += 1
             self.velo[0] *= -1
 
     def move(self):

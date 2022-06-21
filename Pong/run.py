@@ -34,3 +34,6 @@ def run_Pong():
 
         placar1.contagem()
         pygame.display.update()
+
+
+run_Pong()
