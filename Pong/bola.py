@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from globais import BRANCO, TELA, TELA_RETANGULO
+from Pong.globais import BRANCO, TELA, TELA_RETANGULO
 
 
 class Bola:

@@ -1,6 +1,6 @@
 import pygame
 
-from globais import BRANCO, TELA
+from Pong.globais import BRANCO, TELA
 
 
 class Placar():

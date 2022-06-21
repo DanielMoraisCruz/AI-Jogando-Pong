@@ -1,9 +1,9 @@
 import pygame
 
-from bola import Bola
-from globais import PRETO, TELA
-from placar import Placar
-from player import Player
+from Pong.bola import Bola
+from Pong.globais import PRETO, TELA
+from Pong.placar import Placar
+from Pong.player import Player
 
 
 def run_Pong():
@@ -34,6 +34,3 @@ def run_Pong():
 
         placar1.contagem()
         pygame.display.update()
-
-
-run_Pong()
