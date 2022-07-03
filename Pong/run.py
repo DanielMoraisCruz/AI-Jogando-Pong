@@ -77,4 +77,7 @@ def run_Pong():
 
         control.contagem()
 
+        if control.check_win():
+            ...
+
         pygame.display.update()

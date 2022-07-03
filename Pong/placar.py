@@ -25,7 +25,7 @@ class Placar():
         TELA.blit(TELA, (0, 0))
 
 
-def edit_tempo(ms):
+def edit_ms_for_time(ms):
     tempo = (ms//1000)
     s = 0
     m = 0
@@ -42,14 +42,22 @@ def edit_tempo(ms):
     return (f"{m}:{s}")
 
 
+def edit_time_for_ms(tempo):
+    m = tempo[0:1]
+    s = tempo[3:4]
+    ms = (m*60+s)*1000
+    return ms
+
+
 class Timer():
 
     def __init__(self):
         pygame.font.init()
         self.fonte = pygame.font.Font(None, 36)
+        self.tempo = edit_ms_for_time(0)
 
     def exibe_tempo(self, ms):
-        self.tempo = edit_tempo(ms)
+        self.tempo = edit_ms_for_time(ms)
 
         self.text = self.fonte.render(self.tempo, 1, BRANCO)
         self.textpos = self.text.get_rect()
@@ -63,3 +71,6 @@ class Timer():
         TELA.blit(self.text, self.textpos)
         TELA.blit(self.barra, self.barrapos)
         TELA.blit(TELA, (0, 0))
+
+    def return_time(self):
+        return edit_time_for_ms(self.tempo)

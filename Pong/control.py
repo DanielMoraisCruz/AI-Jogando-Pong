@@ -20,3 +20,9 @@ class Control():
         self.timer.exibe_tempo(ms)
         if (self.tempo != self.tempo_aux):
             self.tempo_aux = (ms//1000)
+
+    def check_win(self, m, s):
+        self.tempo = self.timer.return_time()
+        if self.tempo == (f"{m}:{s}"):
+            return True
+        return False
