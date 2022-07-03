@@ -1,4 +1,4 @@
-from Pong.run import run_Pong
+from Pong.run import Game_run
 
 
 def main():
@@ -10,7 +10,12 @@ def main():
     Returns:
         _type_: _description_
     """
-    run_Pong()
+
+    game = Game_run(60)
+
+    while game.runing:
+        game.curr_menu.display_menu()
+        game.game_loop()
 
     return 0
 
