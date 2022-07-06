@@ -33,8 +33,6 @@ class Game_run():
         # passando como variaveis os dois jogadores
         self.control = Control(self.player1, self.player2)
 
-        # inicia o Jogo
-        # self.run_Pong()
         self.main_menu = MainMenu(self)
         self.curr_menu = self.main_menu
 
@@ -58,13 +56,13 @@ class Game_run():
             if self.START_KEY:
                 self.playing = False
             self.display.fill(BLACK)
-            self.draw_text("Teste", 20, DISPLAY_SIZE[0]/2, DISPLAY_SIZE[1]/2)
 
             WINDOW.blit(self.display, (0, 0))
 
-            # self.run_Pong()
+            self.run_Pong()
 
             pygame.display.update()
+            self.reset_keys()
 
     def check_events(self):
         for event in pygame.event.get():
