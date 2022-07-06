@@ -21,8 +21,12 @@ class Control():
         if (self.tempo != self.tempo_aux):
             self.tempo_aux = (ms//1000)
 
-    def check_win(self, m, s):
+    def check_win_for_time(self, m, s):
         self.tempo = self.timer.return_time()
         if self.tempo == (f"{m}:{s}"):
             return True
         return False
+
+    def check_win_for_time(self, point):
+        if self.player1.placar.pontos
+        self.player2.placar.pontos

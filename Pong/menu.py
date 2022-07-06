@@ -107,6 +107,6 @@ class OptionsMenu(Menu):
             self.draw_cursor()
             self.blit_screen()
 
-    def check_input(self):
-        self.move_cursor()
-        if self.game.
+    # def check_input(self):
+    #     self.move_cursor()
+    #     if self.game.

@@ -14,7 +14,7 @@ class Bola:
         self.velocidade = velocidade
         self.set_bola()
 
-        self.colide_key = True
+        self.count_1, self.count_2 = 0, 0
 
         self.player1 = player1
         self.player2 = player2
@@ -38,15 +38,15 @@ class Bola:
         self.pos = list(WINDOW_RECT.center)
 
     def colide_parede(self):
-        self.botton_altura = (self.imagem_retangulo.y >
+        self.botton_altura = (self.imagem_retangulo.y >=
                               WINDOW_RECT.bottom - self.altura)
-        self.right_largura = (self.imagem_retangulo.x >
+        self.right_largura = (self.imagem_retangulo.x >=
                               WINDOW_RECT.right - self.largura)
-
+        print(self.imagem_retangulo.x, WINDOW_RECT.right - self.largura)
         if self.imagem_retangulo.y <= 0 or self.botton_altura:
             self.velo[1] *= -1
 
-        if self.imagem_retangulo.x <= 0 or self.right_largura:
+        if self.imagem_retangulo.x <= 5 or self.right_largura:
             self.velo[0] *= -1
             self.colide_key = False
 
@@ -57,11 +57,12 @@ class Bola:
                 self.player2.placar.pontos += 1
 
     def colide_player(self, player):
-        ajuste = (player[0], player[1], player[2]+1, player[3]+1)
+        ajuste = (player[0]+1, player[1]+1, player[2]+1, player[3]+1)
         if self.imagem_retangulo.colliderect(ajuste):
             # self.placar.pontos += 1
             self.velo[0] *= -1
             self.velocidade += 1
+            self.colide_key = False
 
     def move(self):
         self.pos[0] += self.velo[0] * self.velocidade
@@ -73,11 +74,23 @@ class Bola:
 
     def atualiza(self):
         self.colide_parede()
-        if self.colide_key:
+        
+        if self.player1.colide_key:
             self.colide_player(self.player1.imagem_retangulo)
+        else:
+            if self.count_1 > 1500:
+                self.player1.colide_key = True
+                self.count_1 = 0
+            self.count_1 += 1
+
+        if self.player2.colide_key:
             self.colide_player(self.player2.imagem_retangulo)
         else:
-            self.espera()
+            if self.count_2 > 1500:
+                self.player2.colide_key = True
+                self.count_2 = 0
+            self.count_2 += 1
+
         self.move()
 
     def realiza(self):

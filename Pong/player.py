@@ -1,3 +1,5 @@
+from platform import win32_edition
+
 import pygame
 
 from Pong.globais import WHITH, WINDOW, WINDOW_RECT
@@ -13,9 +15,11 @@ class Player:
         self.tipo = tipo
         self.placar = Placar(self.tipo)
         if self.tipo == 'right':
-            self.imagem_retangulo[0] = 1
+            self.imagem_retangulo[0] = 5
         else:
-            self.imagem_retangulo[0] = 799
+            self.imagem_retangulo[0] = 790
+
+        self.colide_key = True
 
     def move(self, x, y):
         self.imagem_retangulo[0] += x * self.velicidade
