@@ -1,6 +1,6 @@
 import pygame
 
-from Pong.globais import BRANCO, TELA
+from Pong.globais import WHITH, WINDOW
 
 
 class Placar():
@@ -12,17 +12,17 @@ class Placar():
         self.tipo = tipo
 
     def contagem(self):
-        self.text = self.fonte.render((f"{str(self.pontos)}"), 1, BRANCO)
+        self.text = self.fonte.render((f"{str(self.pontos)}"), 1, WHITH)
         self.textpos = self.text.get_rect()
 
         distancia = 55
         if self.tipo == 'right':
-            self.textpos.centerx = TELA.get_width()/2 + distancia
+            self.textpos.centerx = WINDOW.get_width()/2 + distancia
         else:
-            self.textpos.centerx = TELA.get_width()/2 - distancia
+            self.textpos.centerx = WINDOW.get_width()/2 - distancia
 
-        TELA.blit(self.text, self.textpos)
-        TELA.blit(TELA, (0, 0))
+        WINDOW.blit(self.text, self.textpos)
+        WINDOW.blit(WINDOW, (0, 0))
 
 
 def edit_ms_for_time(ms):
@@ -59,18 +59,15 @@ class Timer():
     def exibe_tempo(self, ms):
         self.tempo = edit_ms_for_time(ms)
 
-        self.text = self.fonte.render(self.tempo, 1, BRANCO)
+        self.text = self.fonte.render(self.tempo, 1, WHITH)
         self.textpos = self.text.get_rect()
 
-        self.barra = self.fonte.render("|          |", 1, BRANCO)
+        self.barra = self.fonte.render("|          |", 1, WHITH)
         self.barrapos = self.barra.get_rect()
 
-        self.barrapos.centerx = TELA.get_width()/2
-        self.textpos.centerx = TELA.get_width()/2
+        self.barrapos.centerx = WINDOW.get_width()/2
+        self.textpos.centerx = WINDOW.get_width()/2
 
-        TELA.blit(self.text, self.textpos)
-        TELA.blit(self.barra, self.barrapos)
-        TELA.blit(TELA, (0, 0))
-
-    def return_time(self):
-        return edit_time_for_ms(self.tempo)
+        WINDOW.blit(self.text, self.textpos)
+        WINDOW.blit(self.barra, self.barrapos)
+        WINDOW.blit(WINDOW, (0, 0))

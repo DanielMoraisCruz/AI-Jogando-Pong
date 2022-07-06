@@ -1,13 +1,13 @@
 import pygame
 
-from Pong.globais import BRANCO, TELA, TELA_RETANGULO
+from Pong.globais import WHITH, WINDOW, WINDOW_RECT
 from Pong.placar import Placar
 
 
 class Player:
     def __init__(self, tamanho, velicidade, tipo):
         self.imagem = pygame.Surface(tamanho)
-        self.imagem.fill(BRANCO)
+        self.imagem.fill(WHITH)
         self.imagem_retangulo = self.imagem.get_rect()
         self.velicidade = velicidade
         self.tipo = tipo
@@ -36,7 +36,7 @@ class Player:
             if tecla[pygame.K_DOWN]:  # or tecla[pygame.K_s]:
                 self.move(0, 1)
 
-        self.imagem_retangulo.clamp_ip(TELA_RETANGULO)
+        self.imagem_retangulo.clamp_ip(WINDOW_RECT)
 
     def realiza(self):
-        TELA.blit(self.imagem, self.imagem_retangulo)
+        WINDOW.blit(self.imagem, self.imagem_retangulo)

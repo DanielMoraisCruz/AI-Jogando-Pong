@@ -2,14 +2,14 @@ import random
 
 import pygame
 
-from Pong.globais import BRANCO, TELA, TELA_RETANGULO
+from Pong.globais import WHITH, WINDOW, WINDOW_RECT
 
 
 class Bola:
     def __init__(self, tamanho, velocidade, player1, player2):
         self.altura, self.largura = tamanho
         self.imagem = pygame.Surface(tamanho)
-        self.imagem.fill(BRANCO)
+        self.imagem.fill(WHITH)
         self.imagem_retangulo = self.imagem.get_rect()
         self.velocidade = velocidade
         self.set_bola()
@@ -30,18 +30,18 @@ class Bola:
     def set_bola(self):
         x = self.aleatorio()
         y = self.aleatorio()
-        self.imagem_retangulo.x = TELA_RETANGULO.centerx
-        self.imagem_retangulo.y = TELA_RETANGULO.centery
+        self.imagem_retangulo.x = WINDOW_RECT.centerx
+        self.imagem_retangulo.y = WINDOW_RECT.centery
 
         self.velo = [x, y]
 
-        self.pos = list(TELA_RETANGULO.center)
+        self.pos = list(WINDOW_RECT.center)
 
     def colide_parede(self):
         self.botton_altura = (self.imagem_retangulo.y >
-                              TELA_RETANGULO.bottom - self.altura)
+                              WINDOW_RECT.bottom - self.altura)
         self.right_largura = (self.imagem_retangulo.x >
-                              TELA_RETANGULO.right - self.largura)
+                              WINDOW_RECT.right - self.largura)
 
         if self.imagem_retangulo.y <= 0 or self.botton_altura:
             self.velo[1] *= -1
@@ -81,4 +81,4 @@ class Bola:
         self.move()
 
     def realiza(self):
-        TELA.blit(self.imagem, self.imagem_retangulo)
+        WINDOW.blit(self.imagem, self.imagem_retangulo)
