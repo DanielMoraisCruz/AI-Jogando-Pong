@@ -5,13 +5,16 @@ import pygame
 from Pong.globais import WHITH, WINDOW, WINDOW_RECT
 
 
-class Bola:
-    def __init__(self, tamanho, velocidade, player1, player2):
+class Ball:
+    def __init__(self, tamanho, velocidade, player1, player2, limite_vel):
         self.altura, self.largura = tamanho
+        
         self.imagem = pygame.Surface(tamanho)
         self.imagem.fill(WHITH)
-        self.imagem_retangulo = self.imagem.get_rect()
+        self.img_rect_ball = self.imagem.get_rect()
+        
         self.velocidade = velocidade
+        self.limite_vel = limite_vel
         self.set_bola()
 
         self.count_1, self.count_2 = 0, 0
@@ -30,35 +33,40 @@ class Bola:
     def set_bola(self):
         x = self.aleatorio()
         y = self.aleatorio()
-        self.imagem_retangulo.x = WINDOW_RECT.centerx
-        self.imagem_retangulo.y = WINDOW_RECT.centery
+        self.img_rect_ball.x = WINDOW_RECT.centerx
+        self.img_rect_ball.y = WINDOW_RECT.centery
 
         self.velo = [x, y]
 
         self.pos = list(WINDOW_RECT.center)
 
+        if self.velocidade > self.limite_vel:
+            self.velocidade = self.limite_vel
+
     def colide_parede(self):
-        self.botton_altura = (self.imagem_retangulo.y >=
+        self.botton_altura = (self.img_rect_ball.y >
                               WINDOW_RECT.bottom - self.altura)
-        self.right_largura = (self.imagem_retangulo.x >=
+        self.right_largura = (self.img_rect_ball.x >
                               WINDOW_RECT.right - self.largura)
-        print(self.imagem_retangulo.x, WINDOW_RECT.right - self.largura)
-        if self.imagem_retangulo.y <= 0 or self.botton_altura:
+
+        if self.img_rect_ball.y <= 0 or self.botton_altura:
             self.velo[1] *= -1
 
-        if self.imagem_retangulo.x <= 5 or self.right_largura:
+        if self.img_rect_ball.x <= 0 or self.right_largura:
             self.velo[0] *= -1
             self.colide_key = False
 
             if self.right_largura:
                 self.player1.placar.pontos += 1
+                self.set_bola()
 
-            if self.imagem_retangulo.x <= 0:
+            if self.img_rect_ball.x <= 0:
                 self.player2.placar.pontos += 1
+                self.set_bola()
 
     def colide_player(self, player):
         ajuste = (player[0]+1, player[1]+1, player[2]+1, player[3]+1)
-        if self.imagem_retangulo.colliderect(ajuste):
+        if self.img_rect_ball.colliderect(ajuste):
             # self.placar.pontos += 1
             self.velo[0] *= -1
             self.velocidade += 1
@@ -67,16 +75,13 @@ class Bola:
     def move(self):
         self.pos[0] += self.velo[0] * self.velocidade
         self.pos[1] += self.velo[1] * self.velocidade
-        self.imagem_retangulo.center = self.pos
-
-    def espera(self):
-        self.colide_key = True
+        self.img_rect_ball.center = self.pos
 
     def atualiza(self):
         self.colide_parede()
-        
+
         if self.player1.colide_key:
-            self.colide_player(self.player1.imagem_retangulo)
+            self.colide_player(self.player1.img_rect_player)
         else:
             if self.count_1 > 1500:
                 self.player1.colide_key = True
@@ -84,7 +89,7 @@ class Bola:
             self.count_1 += 1
 
         if self.player2.colide_key:
-            self.colide_player(self.player2.imagem_retangulo)
+            self.colide_player(self.player2.img_rect_player)
         else:
             if self.count_2 > 1500:
                 self.player2.colide_key = True
@@ -94,4 +99,4 @@ class Bola:
         self.move()
 
     def realiza(self):
-        WINDOW.blit(self.imagem, self.imagem_retangulo)
+        WINDOW.blit(self.imagem, self.img_rect_ball)

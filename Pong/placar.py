@@ -11,7 +11,7 @@ class Placar():
 
         self.tipo = tipo
 
-    def contagem(self):
+    def counter_placar(self):
         self.text = self.fonte.render((f"{str(self.pontos)}"), 1, WHITH)
         self.textpos = self.text.get_rect()
 
@@ -25,44 +25,20 @@ class Placar():
         WINDOW.blit(WINDOW, (0, 0))
 
 
-def edit_ms_for_time(ms):
-    tempo = (ms//1000)
-    s = 0
-    m = 0
-    while tempo >= 60:
-        m += 1
-        tempo -= 60
-    s = tempo
-
-    if (s < 10):
-        s = "0" + str(s)
-    if (m < 10):
-        m = "0" + str(m)
-
-    return (f"{m}:{s}")
-
-
-def edit_time_for_ms(tempo):
-    m = tempo[0:1]
-    s = tempo[3:4]
-    ms = (m*60+s)*1000
-    return ms
-
-
 class Timer():
 
     def __init__(self):
         pygame.font.init()
-        self.fonte = pygame.font.Font(None, 36)
-        self.tempo = edit_ms_for_time(0)
+        self.font = pygame.font.Font(None, 36)
+        self.time = self.edit_ms_for_time()
 
-    def exibe_tempo(self, ms):
-        self.tempo = edit_ms_for_time(ms)
+    def displays_time(self, ms):
+        self.time = self.edit_ms_for_time(ms)
 
-        self.text = self.fonte.render(self.tempo, 1, WHITH)
+        self.text = self.font.render(self.time, 1, WHITH)
         self.textpos = self.text.get_rect()
 
-        self.barra = self.fonte.render("|          |", 1, WHITH)
+        self.barra = self.font.render("|          |", 1, WHITH)
         self.barrapos = self.barra.get_rect()
 
         self.barrapos.centerx = WINDOW.get_width()/2
@@ -71,3 +47,25 @@ class Timer():
         WINDOW.blit(self.text, self.textpos)
         WINDOW.blit(self.barra, self.barrapos)
         WINDOW.blit(WINDOW, (0, 0))
+
+    def edit_ms_for_time(self, ms=0):
+        time = (ms//1000)
+        s = 0
+        m = 0
+        while time >= 60:
+            m += 1
+            time -= 60
+        s = time
+
+        if (s < 10):
+            s = "0" + str(s)
+        if (m < 10):
+            m = "0" + str(m)
+        x = (f"{m}:{s}")
+        return x
+
+    def edit_time_for_ms(self, time):
+        m = time[0:1]
+        s = time[3:4]
+        ms = (m*60+s)*1000
+        return ms

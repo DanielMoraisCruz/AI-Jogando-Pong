@@ -1,4 +1,4 @@
-from Pong.bola import Bola
+from Pong.ball import Ball
 from Pong.placar import Timer
 
 
@@ -7,26 +7,40 @@ class Control():
     def __init__(self, player1, player2):
         self.player1 = player1
         self.player2 = player2
-        self.bola = Bola((15, 15), 4, self.player1, self.player2)
+        self.bola = Ball((15, 15), 4, self.player1, self.player2, 10)
         self.timer = Timer()
-        self.tempo_aux = 0
+        self.time_aux = 0
+        self.point = 10
+        self.limit_time = 100000
 
-    def contagem(self):
-        self.player1.placar.contagem()
-        self.player2.placar.contagem()
+    def counter_control(self):
+        self.player1.placar.counter_placar()
+        self.player2.placar.counter_placar()
 
     def time_evets(self, ms):
-        self.tempo = (ms//1000)
-        self.timer.exibe_tempo(ms)
-        if (self.tempo != self.tempo_aux):
-            self.tempo_aux = (ms//1000)
+        self.time = (ms//1000)
+        self.timer.displays_time(ms)
+        if (self.time != self.time_aux):
+            self.time_aux = (ms//1000)
 
-    def check_win_for_time(self, m, s):
-        self.tempo = self.timer.return_time()
-        if self.tempo == (f"{m}:{s}"):
-            return True
-        return False
+    def check_win_for_time(self):
+        self.time_at = self.timer.edit_ms_for_time(self.limit_time)
+        self.time = self.timer.time
+        print(self.time, self.time_at)
+        if self.time == self.time_at:
+            if self.player1.placar.pontos > self.player1.placar.pontos:
+                return True, 1
+            elif self.player1.placar.pontos > self.player1.placar.pontos:
+                return True, 2
+            else:
+                return True, 3
+        return False, 0
 
-    def check_win_for_time(self, point):
-        if self.player1.placar.pontos
-        self.player2.placar.pontos
+    def check_win_for_point(self):
+        print(self.player1.placar.pontos, self.point)
+        print(self.player2.placar.pontos, self.point)
+        if self.player1.placar.pontos == self.point:
+            return True, 1
+        if self.player2.placar.pontos == self.point:
+            return True, 2
+        return False, 0
