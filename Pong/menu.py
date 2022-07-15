@@ -25,8 +25,6 @@ class MainMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.state = "Start"
-        self.main_menux = DISPLAY_SIZE[0]/2
-        self.main_menuy = DISPLAY_SIZE[1]/2 - 50
         self.startx, self.starty = self.mid_w, self.mid_h + 15
         self.optionsx, self.optionsy = self.mid_w, self.mid_h + 45
         self.creditsx, self.creditsy = self.mid_w, self.mid_h + 75
@@ -39,7 +37,7 @@ class MainMenu(Menu):
             self.check_input()
             self.game.display.fill(BLACK)
             self.game.draw_text(
-                'Main Menu', 70, self.main_menux, self.main_menuy)
+                "Main Menu", 70, self.mid_w, self.mid_h - 50)
             self.game.draw_text("StartGame", 50, self.startx, self.starty)
             self.game.draw_text("Options", 50, self.optionsx, self.optionsy)
             self.game.draw_text("Credits", 50, self.creditsx, self.creditsy)
@@ -80,15 +78,15 @@ class MainMenu(Menu):
             if self.state == "Start":
                 self.game.playing = True
             elif self.state == "Options":
-                pass
+                self.game.curr_menu = self.game.options
             elif self.state == "Credits":
-                pass
+                self.game.curr_menu = self.game.credits
             self.run_display = False
 
 
 class OptionsMenu(Menu):
     def __init__(self, game) -> None:
-        Menu.__init__(self, game)
+        super().__init__(game)
         self.state = "Volume"
         self.volx, self.voly = self.mid_w, self.mid_h + 20
         self.controlsx, self.controlsy = self.mid_w, self.mid_h + 40
@@ -101,12 +99,43 @@ class OptionsMenu(Menu):
             self.check_input()
             self.game.display.fill(BLACK)
             self.game.draw_text(
-                "Options", 50, self.main_menux, self.main_menuy)
+                "Options", 50, self.mid_w, self.mid_h)
             self.game.draw_text("Volume",  50, self.volx, self.voly)
             self.game.draw_text("Controls", 50, self.controlsx, self.controlsy)
             self.draw_cursor()
             self.blit_screen()
 
-    # def check_input(self):
-    #     self.move_cursor()
-    #     if self.game.
+    def check_input(self):
+        if self.game.BACK_KEY:
+            self.game.curr_menu = self.game.main_menu
+            self.run_display = False
+        elif self.game.UP_KEY or self.game.DOWN_KEY:
+            if self.state == 'Volume':
+                self.state = 'Controls'
+                self.cursor_rect.midtop = (
+                    self.controlsx + self.offset, self.controlsy)
+            elif self.state == 'Controls':
+                self.state = 'Volume'
+                self.cursor_rect.midtop = (
+                    self.volx + self.offset, self.voly)
+        elif self.game.START_KEY:
+            pass
+
+
+class CreditsMenu(Menu):
+    def __init__(self, game) -> None:
+        super().__init__(game)
+
+    def display_menu(self):
+        self.run_display = True
+        while self.run_display:
+            self.game.check_events()
+            self.game.display.fill(BLACK)
+            if self.game.UP_KEY or self.game.DOWN_KEY:
+                self.game.curr_menu = self.game.main_menu
+                self.run_display = False
+            self.game.draw_text(
+                "Creditis", 50, self.mid_w, self.mid_h)
+            self.game.draw_text(
+                "Made by me",  50, self.mid_w, self.mid_h+10)
+            self.blit_screen()

@@ -8,16 +8,14 @@ from Pong.globais import WHITH, WINDOW, WINDOW_RECT
 class Ball:
     def __init__(self, tamanho, velocidade, player1, player2, limite_vel):
         self.altura, self.largura = tamanho
-        
+
         self.imagem = pygame.Surface(tamanho)
         self.imagem.fill(WHITH)
         self.img_rect_ball = self.imagem.get_rect()
-        
+
         self.velocidade = velocidade
         self.limite_vel = limite_vel
         self.set_bola()
-
-        self.count_1, self.count_2 = 0, 0
 
         self.player1 = player1
         self.player2 = player2
@@ -79,23 +77,8 @@ class Ball:
 
     def atualiza(self):
         self.colide_parede()
-
-        if self.player1.colide_key:
-            self.colide_player(self.player1.img_rect_player)
-        else:
-            if self.count_1 > 1500:
-                self.player1.colide_key = True
-                self.count_1 = 0
-            self.count_1 += 1
-
-        if self.player2.colide_key:
-            self.colide_player(self.player2.img_rect_player)
-        else:
-            if self.count_2 > 1500:
-                self.player2.colide_key = True
-                self.count_2 = 0
-            self.count_2 += 1
-
+        self.colide_player(self.player1.img_rect_player)
+        self.colide_player(self.player2.img_rect_player)
         self.move()
 
     def realiza(self):

@@ -1,4 +1,4 @@
-from Pong.run import Game_run
+from Pong.game_run import Game_run
 
 
 def main():

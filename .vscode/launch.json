@@ -11,6 +11,13 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Python: Módulo",
+            "type": "python",
+            "request": "launch",
+            "module": "Pong",
+            "justMyCode": true
         }
     ]
 }
