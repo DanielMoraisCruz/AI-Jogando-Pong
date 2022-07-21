@@ -2,25 +2,25 @@ import random
 
 import pygame
 
-from Pong.globais import WHITH, WINDOW, WINDOW_RECT
+from Pong.globals import WHITE, WINDOW, WINDOW_RECT
 
 
 class Ball:
-    def __init__(self, tamanho, velocidade, player1, player2, limite_vel):
+    def __init__(self, tamanho, speed, player1, player2, limit_speed):
         self.altura, self.largura = tamanho
 
-        self.imagem = pygame.Surface(tamanho)
-        self.imagem.fill(WHITH)
-        self.img_rect_ball = self.imagem.get_rect()
+        self.image = pygame.Surface(tamanho)
+        self.image.fill(WHITE)
+        self.img_rect_ball = self.image.get_rect()
 
-        self.velocidade = velocidade
-        self.limite_vel = limite_vel
+        self.speed = speed
+        self.limit_speed = limit_speed
         self.set_bola()
 
         self.player1 = player1
         self.player2 = player2
 
-    def aleatorio(self):
+    def random(self):
         while True:
             num = random.uniform(-1.0, 1.0)
             if num > -0.5 and num < 0.5:
@@ -29,57 +29,57 @@ class Ball:
                 return num
 
     def set_bola(self):
-        x = self.aleatorio()
-        y = self.aleatorio()
+        x = self.random()
+        y = self.random()
         self.img_rect_ball.x = WINDOW_RECT.centerx
         self.img_rect_ball.y = WINDOW_RECT.centery
 
-        self.velo = [x, y]
+        self.speed_tuple = [x, y]
 
         self.pos = list(WINDOW_RECT.center)
 
-        if self.velocidade > self.limite_vel:
-            self.velocidade = self.limite_vel
+        if self.speed > self.limit_speed:
+            self.speed = self.limit_speed
 
-    def colide_parede(self):
-        self.botton_altura = (self.img_rect_ball.y >
+    def wall_collider(self):
+        self.bottom_altura = (self.img_rect_ball.y >
                               WINDOW_RECT.bottom - self.altura)
         self.right_largura = (self.img_rect_ball.x >
                               WINDOW_RECT.right - self.largura)
 
-        if self.img_rect_ball.y <= 0 or self.botton_altura:
-            self.velo[1] *= -1
+        if self.img_rect_ball.y <= 0 or self.bottom_altura:
+            self.speed_tuple[1] *= -1
 
         if self.img_rect_ball.x <= 0 or self.right_largura:
-            self.velo[0] *= -1
-            self.colide_key = False
+            self.speed_tuple[0] *= -1
+            self.collide_key = False
 
             if self.right_largura:
-                self.player1.placar.pontos += 1
+                self.player1.score.points += 1
                 self.set_bola()
 
             if self.img_rect_ball.x <= 0:
-                self.player2.placar.pontos += 1
+                self.player2.score.points += 1
                 self.set_bola()
 
-    def colide_player(self, player):
-        ajuste = (player[0]+1, player[1]+1, player[2]+1, player[3]+1)
-        if self.img_rect_ball.colliderect(ajuste):
-            # self.placar.pontos += 1
-            self.velo[0] *= -1
-            self.velocidade += 1
-            self.colide_key = False
+    def collide_player(self, player):
+        adjust = (player[0]+1, player[1]+1, player[2]+1, player[3]+1)
+        if self.img_rect_ball.colliderect(adjust):
+            # self.score.points += 1
+            self.speed_tuple[0] *= -1
+            self.speed += 1
+            self.collide_key = False
 
     def move(self):
-        self.pos[0] += self.velo[0] * self.velocidade
-        self.pos[1] += self.velo[1] * self.velocidade
+        self.pos[0] += self.speed_tuple[0] * self.speed
+        self.pos[1] += self.speed_tuple[1] * self.speed
         self.img_rect_ball.center = self.pos
 
-    def atualiza(self):
-        self.colide_parede()
-        self.colide_player(self.player1.img_rect_player)
-        self.colide_player(self.player2.img_rect_player)
+    def actualize(self):
+        self.wall_collider()
+        self.collide_player(self.player1.img_rect_player)
+        self.collide_player(self.player2.img_rect_player)
         self.move()
 
-    def realiza(self):
-        WINDOW.blit(self.imagem, self.img_rect_ball)
+    def realize(self):
+        WINDOW.blit(self.image, self.img_rect_ball)

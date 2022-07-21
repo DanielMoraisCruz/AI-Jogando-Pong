@@ -1,18 +1,18 @@
 import pygame
 
-from Pong.globais import WHITH, WINDOW
+from Pong.globals import WHITE, WINDOW
 
 
-class Placar():
+class Score():
     def __init__(self, tipo):
         pygame.font.init()
         self.fonte = pygame.font.Font(None, 36)
-        self.pontos = 0
+        self.points = 0
 
         self.tipo = tipo
 
-    def counter_placar(self):
-        self.text = self.fonte.render((f"{str(self.pontos)}"), 1, WHITH)
+    def counter_score(self):
+        self.text = self.fonte.render((f"{str(self.points)}"), 1, WHITE)
         self.textpos = self.text.get_rect()
 
         distancia = 55
@@ -35,10 +35,10 @@ class Timer():
     def displays_time(self, ms):
         self.time = self.edit_ms_for_time(ms)
 
-        self.text = self.font.render(self.time, 1, WHITH)
+        self.text = self.font.render(self.time, 1, WHITE)
         self.textpos = self.text.get_rect()
 
-        self.barra = self.font.render("|          |", 1, WHITH)
+        self.barra = self.font.render("|          |", 1, WHITE)
         self.barrapos = self.barra.get_rect()
 
         self.barrapos.centerx = WINDOW.get_width()/2
