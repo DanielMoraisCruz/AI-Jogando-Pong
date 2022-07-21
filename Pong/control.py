@@ -1,12 +1,12 @@
 from Pong.ball import Ball
 from Pong.globals import DISPLAY_SIZE
 from Pong.player import Player
-from Pong.score import Timer
+from Pong.time import Timer
 
 
 class Control():
 
-    def __init__(self, points, speed_ball, limit_speed, speed_player,
+    def __init__(self, point, speed_ball, limit_speed, speed_player,
                  limit_speed_player):
 
         self.size_playerX = DISPLAY_SIZE[0]*0.025
@@ -25,7 +25,7 @@ class Control():
                          speed_ball, self.player1, self.player2, limit_speed)
         self.timer = Timer()
         self.time_aux = 0
-        self.point = points
+        self.point = point
         self.limit_time = 100000
 
     def counter_control(self):
@@ -33,10 +33,7 @@ class Control():
         self.player2.score.counter_score()
 
     def time_events(self, ms):
-        self.time = (ms//1000)
         self.timer.displays_time(ms)
-        if (self.time != self.time_aux):
-            self.time_aux = (ms//1000)
 
     def check_win_for_time(self):
         self.time_at = self.timer.edit_ms_for_time(self.limit_time)
@@ -63,3 +60,5 @@ class Control():
     def reset_time_points(self):
         self.player1.score.points = 0
         self.player2.score.points = 0
+
+        self.timer.time = self.timer.edit_ms_for_time()

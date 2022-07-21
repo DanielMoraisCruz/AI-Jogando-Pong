@@ -25,7 +25,7 @@ class Game_run():
 
         # Determina-se o Controlador de Eventos do Jogo,
         # passando como variaveis os dois jogadores
-        self.control = Control(points=10, speed_ball=40,
+        self.control = Control(point=10, speed_ball=40,
                                limit_speed=100, speed_player=15,
                                limit_speed_player=50)
 

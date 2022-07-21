@@ -6,10 +6,10 @@ from Pong.globals import WHITE, WINDOW, WINDOW_RECT
 
 
 class Ball:
-    def __init__(self, tamanho, speed, player1, player2, limit_speed):
-        self.altura, self.largura = tamanho
+    def __init__(self, height, speed, player1, player2, limit_speed):
+        self.altura, self.width = height
 
-        self.image = pygame.Surface(tamanho)
+        self.image = pygame.Surface(height)
         self.image.fill(WHITE)
         self.img_rect_ball = self.image.get_rect()
 
@@ -44,17 +44,17 @@ class Ball:
     def wall_collider(self):
         self.bottom_altura = (self.img_rect_ball.y >
                               WINDOW_RECT.bottom - self.altura)
-        self.right_largura = (self.img_rect_ball.x >
-                              WINDOW_RECT.right - self.largura)
+        self.right_width = (self.img_rect_ball.x >
+                            WINDOW_RECT.right - self.width)
 
         if self.img_rect_ball.y <= 0 or self.bottom_altura:
             self.speed_tuple[1] *= -1
 
-        if self.img_rect_ball.x <= 0 or self.right_largura:
+        if self.img_rect_ball.x <= 0 or self.right_width:
             self.speed_tuple[0] *= -1
             self.collide_key = False
 
-            if self.right_largura:
+            if self.right_width:
                 self.player1.score.points += 1
                 self.set_bola()
 
