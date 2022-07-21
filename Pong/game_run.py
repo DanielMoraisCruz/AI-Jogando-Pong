@@ -1,24 +1,20 @@
 import pygame
 
 from Pong.control import Control
-from Pong.globais import BLACK, DISPLAY_SIZE, WHITH, WINDOW
-from Pong.menu import CreditsMenu, MainMenu, OptionsMenu
-from Pong.player import Player
+from Pong.globals import BLACK, DISPLAY_SIZE, WINDOW
 
 
 class Game_run():
     """Inicia Jogo"""
 
-    def __init__(self, frams) -> None:
+    def __init__(self, frames) -> None:
         pygame.init()
 
-        self.runing, self.playing = True, False
-        self.UP_KEY, self.DOWN_KEY = False, False
-        self.START_KEY, self.BACK_KEY = False, False
+        self.running, self.playing = True, True
 
         self.display = pygame.Surface(DISPLAY_SIZE)
 
-        self.frams = frams  # frams por segundo
+        self.frames = frames  # frames por segundo
         self.time = pygame.time.Clock()  # Inicia o Contador
         # Determina que fica no topo da tela
 
@@ -26,45 +22,36 @@ class Game_run():
 
         # Cria os dois jogadores, setando-os como
         # player 1 (na esquerda) e player 2 (na direita)
-        self.player1 = Player((20, 100), 15, 'left')
-        self.player2 = Player((20, 100), 15, 'right')
 
         # Determina-se o Controlador de Eventos do Jogo,
         # passando como variaveis os dois jogadores
-        self.control = Control(self.player1, self.player2, 10, 4, 20)
-
-        self.main_menu = MainMenu(self)
-        self.options = OptionsMenu(self)
-        self.credits = CreditsMenu(self)
-        self.curr_menu = self.main_menu
-
-        self.win_check = False
+        self.control = Control(point=10, speed_ball=40,
+                               limit_speed=100, speed_player=15,
+                               limit_speed_player=50)
 
     def run_Pong(self):
-        self.player1.realiza()
-        self.player1.atualiza(pygame.key.get_pressed())
-        self.player2.realiza()
-        self.player2.atualiza(pygame.key.get_pressed())
+        self.control.player1.realize()
+        self.control.player1.actualize(pygame.key.get_pressed())
+        self.control.player2.realize()
+        self.control.player2.actualize(pygame.key.get_pressed())
 
-        self.control.bola.realiza()
-        self.control.bola.atualiza()
+        self.control.bola.realize()
+        self.control.bola.actualize()
 
-        self.time.tick(self.frams)
+        self.time.tick(self.frames)
 
-        self.control.time_evets(pygame.time.get_ticks())
+        self.control.time_events(pygame.time.get_ticks())
         self.control.counter_control()
 
-        self.win_1, self.winer = self.control.check_win_for_point()
-        self.win_2, self.winer = self.control.check_win_for_time()
+        self.win_1, self.winier = self.control.check_win_for_point()
+        self.win_2, self.winier = self.control.check_win_for_time()
 
         if (self.win_1 or self.win_2):
-            self.win_check = True
+            self.control.reset_time_points()
 
     def game_loop(self):
         while self.playing:
             self.check_events()
-            if self.START_KEY or self.win_check:
-                self.playing = False
 
             self.display.fill(BLACK)
 
@@ -78,34 +65,13 @@ class Game_run():
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.runing, self.playing = False, False
-                self.curr_menu.run_display = False
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    self.START_KEY = True
-                if event.key == pygame.K_DOWN:
-                    self.DOWN_KEY = True
-                if event.key == pygame.K_UP:
-                    self.UP_KEY = True
-                if event.key == pygame.K_ESCAPE:
-                    self.BACK_KEY = True
+                self.running, self.playing = False, False
 
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY = False, False
         self.START_KEY, self.BACK_KEY = False, False
 
-    def draw_text(self, text, size, x, y):
-        font = pygame.font.Font(None, size)
-        text_surface = font.render(text, True, WHITH)
-        text_rect = text_surface.get_rect()
-        text_rect.center = (x, y)
-        self.display.blit(text_surface, text_rect)
-
     def run_game(self):
 
-        if self.curr_menu.run_display or self.win_check:
-            self.curr_menu.display_menu()
-
-        elif self.playing:
+        if self.playing:
             self.game_loop()
