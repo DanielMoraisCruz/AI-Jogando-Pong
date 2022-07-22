@@ -25,11 +25,17 @@ class Game_run():
 
         # Determina-se o Controlador de Eventos do Jogo,
         # passando como variaveis os dois jogadores
-        self.control = Control(point=10, speed_ball=40,
+        self.control = Control(limit_point=10, speed_ball=40,
                                limit_speed=100, speed_player=15,
                                limit_speed_player=50)
 
+        self.win = False
+
     def run_Pong(self):
+        if (self.win):
+            self.control.reset_time_points()
+            self.win = False
+
         self.control.player1.realize()
         self.control.player1.actualize(pygame.key.get_pressed())
         self.control.player2.realize()
@@ -39,15 +45,19 @@ class Game_run():
         self.control.bola.actualize()
 
         self.time.tick(self.frames)
-
         self.control.time_events(pygame.time.get_ticks())
         self.control.counter_control()
 
-        self.win_1, self.winier = self.control.check_win_for_point()
-        self.win_2, self.winier = self.control.check_win_for_time()
+        self.win_1, self.winier_1 = self.control.check_win_for_point()
+        self.win_2, self.winier_2 = self.control.check_win_for_time()
 
         if (self.win_1 or self.win_2):
-            self.control.reset_time_points()
+            if self.winier_1:
+                self.control.player1.score.set_points += 1
+            if self.winier_2:
+                self.control.player2.score.set_points += 1
+
+            self.win = True
 
     def game_loop(self):
         while self.playing:
@@ -60,16 +70,11 @@ class Game_run():
             self.run_Pong()
 
             pygame.display.update()
-            self.reset_keys()
 
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running, self.playing = False, False
-
-    def reset_keys(self):
-        self.UP_KEY, self.DOWN_KEY = False, False
-        self.START_KEY, self.BACK_KEY = False, False
 
     def run_game(self):
 

@@ -9,8 +9,10 @@ class Player:
         self.image = pygame.Surface(height)
         self.image.fill(WHITE)
         self.img_rect_player = self.image.get_rect()
+
         self.speed = speed
         self.limit_speed = limit_speed_player
+
         self.type = type
         self.score = Score(self.type)
         if self.type == 'right':

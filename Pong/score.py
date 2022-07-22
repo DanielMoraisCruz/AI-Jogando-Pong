@@ -8,6 +8,7 @@ class Score():
         pygame.font.init()
         self.font = pygame.font.Font(None, 36)
         self.points = 0
+        self.set_points = 0
 
         self.type = type
 

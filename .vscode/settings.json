@@ -2,6 +2,8 @@
     "cSpell.words": [
         "blit",
         "colliderect",
-        "pygame"
+        "matplotlib",
+        "pygame",
+        "pyplot"
     ]
 }
