@@ -6,7 +6,7 @@ from Pong.globals import WHITE, WINDOW, WINDOW_RECT
 
 
 class Ball:
-    def __init__(self, size, speed, player1, player2, limit_speed):
+    def __init__(self, size, speed, player_1, player_2, limit_speed):
         self.height, self.width = size
 
         self.image = pygame.Surface(size)
@@ -17,12 +17,15 @@ class Ball:
         self.limit_speed = limit_speed
         self.set_bola()
 
-        self.player1 = player1
-        self.player2 = player2
+        self.player_1 = player_1
+        self.player_2 = player_2
+
+        self.ball_pos_x = self.img_rect_ball.x
+        self.ball_pos_y = self.img_rect_ball.y
 
     def random(self):
         while True:
-            num = random.uniform(-1.0, 1.0)
+            num = random.uniform(-1, 1)
             if num > -0.5 and num < 0.5:
                 continue
             else:
@@ -33,6 +36,9 @@ class Ball:
         y = self.random()
         self.img_rect_ball.x = WINDOW_RECT.centerx
         self.img_rect_ball.y = WINDOW_RECT.centery
+
+        self.ball_pos_x = WINDOW_RECT.centerx
+        self. ball_pos_y = WINDOW_RECT.centery
 
         self.speed_tuple = [x, y]
 
@@ -55,30 +61,40 @@ class Ball:
             self.collide_key = False
 
             if self.right_width:
-                self.player1.score.points += 1
+                self.player_1.score.points += 1
+                self.player_1.error = 0
+                self.player_2.error = (
+                    self.player_2.player_pos_y - self.ball_pos_y)/1
                 self.set_bola()
 
             if self.img_rect_ball.x <= 0:
-                self.player2.score.points += 1
+                self.player_2.score.points += 1
+                self.player_2.error = 0
+                self.player_1.error = (
+                    self.player_1.player_pos_y - self.ball_pos_y)/1
                 self.set_bola()
 
     def collide_player(self, player):
-        adjust = (player[0]+1, player[1]+1, player[2]+1, player[3]+1)
+        self.rect_player = player.img_rect_player
+        adjust = (self.rect_player[0]+1, self.rect_player[1]+1,
+                  self.rect_player[2]+1, self.rect_player[3]+1)
         if self.img_rect_ball.colliderect(adjust):
-            # self.score.points += 1
             self.speed_tuple[0] *= -1
             self.speed += 1
             self.collide_key = False
+            player.error = 0
 
     def move(self):
         self.pos[0] += self.speed_tuple[0] * self.speed
         self.pos[1] += self.speed_tuple[1] * self.speed
         self.img_rect_ball.center = self.pos
 
-    def actualize(self):
+    def update(self):
         self.wall_collider()
-        self.collide_player(self.player1.img_rect_player)
-        self.collide_player(self.player2.img_rect_player)
+        self.ball_pos_x = self.img_rect_ball.x
+        self.ball_pos_y = self.img_rect_ball.y
+        self.collide_player(self.player_1)
+        self.collide_player(self.player_2)
         self.move()
 
     def realize(self):

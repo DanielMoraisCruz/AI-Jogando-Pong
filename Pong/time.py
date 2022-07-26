@@ -28,22 +28,22 @@ class Timer():
 
     def edit_ms_for_time(self, ms=0):
         self.time = (ms//1000)
-        self.s = 0
-        self.m = 0
+        self.seconds = 0
+        self.minutes = 0
         while self.time >= 60:
-            self.m += 1
+            self.minutes += 1
             self.time -= 60
-        self.s = self.time
+        self.seconds = self.time
 
-        if (self.s < 10):
-            self.s = "0" + str(self.s)
-        if (self.m < 10):
-            self.m = "0" + str(self.m)
-        self.x = (f"{self.m}:{self.s}")
-        return self.x
+        if (self.seconds < 10):
+            self.seconds = "0" + str(self.seconds)
+        if (self.minutes < 10):
+            self.minutes = "0" + str(self.minutes)
+        self.result_time = (f"{self.minutes}:{self.seconds}")
+        return self.result_time
 
     def edit_time_for_ms(self, time):
-        self.m = time[0:1]
-        self.s = time[3:4]
-        self.ms = (self.m*60+self.s)*1000
+        self.minutes = int(time[0:1])
+        self.seconds = int(time[3:4])
+        self.ms = (self.minutes*60+self.seconds)*1000
         return self.ms

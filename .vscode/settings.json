@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
         "blit",
+        "centerx",
+        "centery",
         "colliderect",
         "matplotlib",
         "pygame",
