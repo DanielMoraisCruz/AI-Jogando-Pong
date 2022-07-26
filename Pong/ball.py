@@ -1,18 +1,20 @@
 import random
 
 import pygame
+from Neural.rede_neural import error_calculator
 
 from Pong.globals import WHITE, WINDOW, WINDOW_RECT
 
 
 class Ball:
-    def __init__(self, size, speed, player_1, player_2, limit_speed):
+    def __init__(self, size, speed, limit_speed, player_1, player_2):
         self.height, self.width = size
 
         self.image = pygame.Surface(size)
         self.image.fill(WHITE)
         self.img_rect_ball = self.image.get_rect()
 
+        self.initial_speed = speed
         self.speed = speed
         self.limit_speed = limit_speed
         self.set_bola()
@@ -45,7 +47,7 @@ class Ball:
         self.pos = list(WINDOW_RECT.center)
 
         if self.speed > self.limit_speed:
-            self.speed = self.limit_speed
+            self.speed = self.initial_speed
 
     def wall_collider(self):
         self.bottom_height = (self.img_rect_ball.y >
@@ -63,15 +65,13 @@ class Ball:
             if self.right_width:
                 self.player_1.score.points += 1
                 self.player_1.error = 0
-                self.player_2.error = (
-                    self.player_2.player_pos_y - self.ball_pos_y)/1
+                self.player_2.error = error_calculator(self.player_2, self, 5)
                 self.set_bola()
 
             if self.img_rect_ball.x <= 0:
                 self.player_2.score.points += 1
                 self.player_2.error = 0
-                self.player_1.error = (
-                    self.player_1.player_pos_y - self.ball_pos_y)/1
+                self.player_1.error = error_calculator(self.player_2, self, 5)
                 self.set_bola()
 
     def collide_player(self, player):
@@ -80,7 +80,9 @@ class Ball:
                   self.rect_player[2]+1, self.rect_player[3]+1)
         if self.img_rect_ball.colliderect(adjust):
             self.speed_tuple[0] *= -1
-            self.speed += 1
+            if self.speed < self.limit_speed:
+                self.speed += 1
+                player.speed = self.speed * 1.5
             self.collide_key = False
             player.error = 0
 

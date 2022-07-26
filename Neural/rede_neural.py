@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from random import uniform
 from threading import Thread
 
@@ -6,18 +7,24 @@ from Pong.globals import DISPLAY_SIZE
 
 
 class Initial_weights():
-    def __init__(self) -> None:
-        self.weights_input_layer_1N = np.array(
-            [uniform(-1, 1) for i in range(4)])
-        self.weights_input_layer_2N = np.array(
-            [uniform(-1, 1) for i in range(4)])
+    def __init__(self, file=NULL) -> None:
 
-        self.weights_hidden_layer_1N = np.array(
-            [uniform(-1, 1) for i in range(2)])
-        self.weights_hidden_layer_2N = np.array(
-            [uniform(-1, 1) for i in range(2)])
+        if file != NULL:
+            with open(file, 'rb') as arq:
+                self.weights_input_layer_1N = np.load(arq)
+                self.weights_input_layer_2N = np.load(arq)
+                self.weights_hidden_layer_1N = np.load(arq)
+                self.weights_hidden_layer_2N = np.load(arq)
+                self.output_weights = np.load(arq)
+        else:
+            self.weights_input_layer_1N = self.random_weights(4)
+            self.weights_input_layer_2N = self.random_weights(4)
+            self.weights_hidden_layer_1N = self.random_weights(2)
+            self.weights_hidden_layer_2N = self.random_weights(2)
+            self.output_weights = self.random_weights(2)
 
-        self.output_weights = np.array([uniform(-1, 1) for i in range(2)])
+    def random_weights(self, n):
+        return np.array([uniform(-1, 1) for i in range(n)])
 
 
 class Rede_neural(Thread):
@@ -124,7 +131,7 @@ class Rede_neural(Thread):
             self.initial_weights.weights_input_layer_2N[i] += (
                 alpha * self.inputs[i] * error)
 
-        print(self.resultant)
+        # print(self.resultant)
 
         with open('data_weights.txt', 'a') as arq:
             arq.write("--------------------------------\n" +
@@ -138,6 +145,7 @@ class Rede_neural(Thread):
             arq.write("--------------------------------\n" +
                       str((self.resultant)) + "\n")
 
-    def error_calculator(self, player, ball, weights):
-        player.error = (player.player_pos_y-ball.ball_pos_y)/weights
-        return player.error
+
+def error_calculator(player, ball, weights):
+    player.error = (player.player_pos_y-ball.ball_pos_y)/weights
+    return player.error

@@ -87,7 +87,6 @@ class Bola:
             self.velo[0] *= -1
             if self.imagem_retangulo.x <= 0:
                 placar1.pontos -= 1
-                print("bateu na parede !")
 
     def move(self):
         self.pos[0] += self.velo[0] * 4
@@ -98,7 +97,7 @@ class Bola:
         if self.imagem_retangulo.colliderect(raqueteRect):
             self.velo[0] *= -1
             placar1.pontos += 1
-            print('voce defendeu')
+            # print('voce defendeu')
 
             global erro
             erro = 0
@@ -227,7 +226,7 @@ class RedeNeural(Thread):
             pesosSegundoNeuronioCamadaEntrada[i] += (
                 alpha * self.entradas[i] * erro)
 
-        print(self.resultado)
+        # print(self.resultado)
 
 
 while not gameOver:

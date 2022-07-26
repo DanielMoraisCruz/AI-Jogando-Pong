@@ -1,8 +1,9 @@
+import numpy as np
 import pygame
-from Neural.rede_neural import Rede_neural
+from Neural.rede_neural import Rede_neural, error_calculator
 
 from Pong.control import Control
-from Pong.globals import BLACK, DISPLAY_SIZE, WINDOW
+from Pong.globals import BLACK, DISPLAY_SIZE, HAVE_FILES, WINDOW
 
 
 class Game_run():
@@ -26,9 +27,13 @@ class Game_run():
 
         # Determina-se o Controlador de Eventos do Jogo,
         # passando como variaveis os dois jogadores
-        self.control = Control(limit_point=100, speed_ball=8,
-                               limit_speed=8, speed_player=10,
-                               limit_speed_player=10)
+        if HAVE_FILES:
+            self.control = Control(limit_point=10, speed_ball=10,
+                                   limit_speed=30,
+                                   file_1="rede_1.npy", file_2="rede_2.npy")
+        else:
+            self.control = Control(limit_point=10, speed_ball=10,
+                                   limit_speed=30)
 
         self.win = False
 
@@ -36,10 +41,6 @@ class Game_run():
         if (self.win):
             self.control.reset_time_points()
             self.win = False
-
-        # print("Bola X e Y: ", self.ball_pos_x, self.ball_pos_y)
-        # print("player_1: ", self.player1_pos_y)
-        # print("player_2: ", self.player2_pos_y)
 
         self.rede_1 = Rede_neural(self.control.player_1, self.control.ball)
         self.rede_2 = Rede_neural(self.control.player_2, self.control.ball)
@@ -59,13 +60,20 @@ class Game_run():
         self.control.ball.realize()
         self.control.ball.update()
 
-        self.error_1 = self.rede_1.error_calculator(self.control.player_1,
-                                                    self.control.ball, 100)
-        self.error_2 = self.rede_2.error_calculator(self.control.player_2,
-                                                    self.control.ball, 100)
+        # self.error_1 = self.control.player_1.error
+        # self.error_2 = self.control.player_2.error
+        self.error_1 = error_calculator(self.control.player_1,
+                                        self.control.ball, 100)
+        self.error_2 = error_calculator(self.control.player_2,
+                                        self.control.ball, 100)
 
-        self.rede_1.updates_weights(self.error_1)
-        self.rede_2.updates_weights(self.error_2)
+        if self.control.ball.speed_tuple[0] < 0:
+            self.rede_1.updates_weights(self.error_1)
+        else:
+            self.rede_2.updates_weights(self.error_2)
+
+        # self.rede_1.updates_weights(self.error_1)
+        # self.rede_2.updates_weights(self.error_2)
 
         self.time.tick(self.frames)
         self.control.time_events(pygame.time.get_ticks())
@@ -96,9 +104,25 @@ class Game_run():
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                save_doc_weights(self.rede_1.initial_weights, "rede_1.npy")
+                save_doc_weights(self.rede_2.initial_weights, "rede_2.npy")
                 self.running, self.playing = False, False
 
     def run_game(self):
 
         if self.playing:
             self.game_loop()
+
+
+def save_doc_weights(weights, name_file):
+    weights_IL1N = weights.weights_input_layer_1N
+    weights_IL2N = weights.weights_input_layer_2N
+    weights_HL1N = weights.weights_hidden_layer_1N
+    weights_HL2N = weights.weights_hidden_layer_2N
+    output_weights = weights.output_weights
+    with open(name_file, 'wb') as arq:
+        np.save(arq, weights_IL1N)
+        np.save(arq, weights_IL2N)
+        np.save(arq, weights_HL1N)
+        np.save(arq, weights_HL2N)
+        np.save(arq, output_weights)
