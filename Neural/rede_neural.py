@@ -82,8 +82,8 @@ class Rede_neural(Thread):
 
         self.resultant = self.sigmoid(self.sum_outputs_OW)
 
-        with open('ff_resultant.txt', 'a') as arq:
-            arq.write(str((self.resultant)) + "\n")
+        # with open('ff_resultant.txt', 'a') as arq:
+        #     arq.write(str((self.resultant)) + "\n")
 
         return self.resultant
 
@@ -133,17 +133,15 @@ class Rede_neural(Thread):
 
         # print(self.resultant)
 
-        with open('data_weights.txt', 'a') as arq:
-            arq.write("--------------------------------\n" +
-                      str((self.weights_IL_1N)) + " " +
-                      str((self.weights_IL_2N)) + "\n" +
-                      str((self.weights_HL_1N)) + " " +
-                      str((self.weights_HL_2N)) + "\n" +
-                      str((self.output_weights)) + "\n")
-
-        with open('data_resultant.txt', 'a') as arq:
-            arq.write("--------------------------------\n" +
-                      str((self.resultant)) + "\n")
+        # with open('data_weights.txt', 'a') as arq:
+        #     arq.write(str((self.weights_IL_1N)) + " " +
+        #               str((self.weights_IL_2N)) + "\n" +
+        #               str((self.weights_HL_1N)) + " " +
+        #               str((self.weights_HL_2N)) + "\n" +
+        #               str((self.output_weights)) + "\n")
+#
+        # with open('data_resultant.txt', 'a') as arq:
+        #     arq.write(str((self.resultant)) + "\n")
 
 
 def error_calculator(player, ball, weights):

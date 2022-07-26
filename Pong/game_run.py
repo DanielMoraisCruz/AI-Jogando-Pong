@@ -28,12 +28,12 @@ class Game_run():
         # Determina-se o Controlador de Eventos do Jogo,
         # passando como variaveis os dois jogadores
         if HAVE_FILES:
-            self.control = Control(limit_point=10, speed_ball=10,
-                                   limit_speed=30,
+            self.control = Control(limit_point=10, speed_ball=5,
+                                   limit_speed=40,
                                    file_1="rede_1.npy", file_2="rede_2.npy")
         else:
-            self.control = Control(limit_point=10, speed_ball=10,
-                                   limit_speed=30)
+            self.control = Control(limit_point=10, speed_ball=5,
+                                   limit_speed=40)
 
         self.win = False
 
@@ -48,10 +48,6 @@ class Game_run():
         self.key_player1 = self.rede_1.feed_forward()
         self.key_player2 = self.rede_2.feed_forward()
 
-        with open('data_training.txt', 'a') as arq:
-            arq.write(str((self.key_player1)) + "\n")
-            arq.write(str((self.key_player2)) + "\n")
-
         self.control.player_1.realize()
         self.control.player_1.update(self.key_player1)
         self.control.player_2.realize()
@@ -62,24 +58,26 @@ class Game_run():
 
         # self.error_1 = self.control.player_1.error
         # self.error_2 = self.control.player_2.error
+
         self.error_1 = error_calculator(self.control.player_1,
                                         self.control.ball, 100)
         self.error_2 = error_calculator(self.control.player_2,
                                         self.control.ball, 100)
 
-        if self.control.ball.speed_tuple[0] < 0:
+        if self.control.player_1.training:
+            print("player 1 esta jogando")
             self.rede_1.updates_weights(self.error_1)
         else:
+            print("player 2 esta jogando")
             self.rede_2.updates_weights(self.error_2)
-
-        # self.rede_1.updates_weights(self.error_1)
-        # self.rede_2.updates_weights(self.error_2)
 
         self.time.tick(self.frames)
         self.control.time_events(pygame.time.get_ticks())
         self.control.counter_control()
 
         self.win_1, self.winier = self.control.check_win_for_point()
+
+        # print(self.control.ball.speed)
 
         if (self.win_1):
             if self.winier == 1:

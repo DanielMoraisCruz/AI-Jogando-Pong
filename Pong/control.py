@@ -61,9 +61,15 @@ class Control():
             self.player_1.error = 0
             self.player_2.error = error_calculator(self.player_2, self.ball, 1)
 
+            self.player_1.training = False
+            self.player_2.training = True
+
         elif self.player_2.score.points > self.player_1.score.points:
             self.player_2.error = 0
             self.player_1.error = error_calculator(self.player_1, self.ball, 1)
+
+            self.player_2.training = False
+            self.player_1.training = True
 
         self.player_1.score.points = 0
         self.player_2.score.points = 0

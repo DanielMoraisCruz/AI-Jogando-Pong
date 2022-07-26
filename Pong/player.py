@@ -14,7 +14,7 @@ class Player:
 
         self.type = type
         self.score = Score(self.type)
-        if self.type == 'right':
+        if self.type == 'left':
             self.img_rect_player[0] = 0
         else:
             self.img_rect_player[0] = DISPLAY_SIZE[0]-10
@@ -26,6 +26,8 @@ class Player:
 
         self.initial_weights = Initial_weights(file)
         self.error = 0
+
+        self.training = True
 
     def move(self, y):
         self.img_rect_player[1] += y * self.speed

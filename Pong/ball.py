@@ -28,12 +28,13 @@ class Ball:
     def random(self):
         while True:
             num = random.uniform(-1, 1)
-            if num > -0.5 and num < 0.5:
+            if num > -0.3 and num < 0.3:
                 continue
             else:
                 return num
 
     def set_bola(self):
+        self.speed = self.initial_speed
         x = self.random()
         y = self.random()
         self.img_rect_ball.x = WINDOW_RECT.centerx
@@ -46,7 +47,7 @@ class Ball:
 
         self.pos = list(WINDOW_RECT.center)
 
-        if self.speed > self.limit_speed:
+        if self.speed >= self.limit_speed:
             self.speed = self.initial_speed
 
     def wall_collider(self):
@@ -78,8 +79,18 @@ class Ball:
         self.rect_player = player.img_rect_player
         adjust = (self.rect_player[0]+1, self.rect_player[1]+1,
                   self.rect_player[2]+1, self.rect_player[3]+1)
-        if self.img_rect_ball.colliderect(adjust):
+
+        adjust_1 = ((self.rect_player[0]+1), (self.rect_player[1]+1),
+                    (self.rect_player[2]+1), (self.rect_player[3]+1)/2)
+
+        collided_player = self.img_rect_ball.colliderect(adjust)
+        collided_left_p = self.img_rect_ball.colliderect(adjust_1)
+
+        if collided_player:
             self.speed_tuple[0] *= -1
+            if not(collided_left_p):
+                self.speed_tuple[1] *= -1
+
             if self.speed < self.limit_speed:
                 self.speed += 1
                 player.speed = self.speed * 1.5
