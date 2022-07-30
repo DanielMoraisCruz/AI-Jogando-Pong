@@ -36,19 +36,9 @@ class Control():
         self.player_2.score.counter_score()
 
     def time_events(self, ms):
-        # self.time_game = self.timer.edit_ms_for_time(ms)
-        # if self.time_game == self.time_up_speed:
-        #     self.player_1.speed = self.ball.speed*1.5
-        #     self.player_2.speed = self.ball.speed*1.5
-        #     self.new_time = self.timer.edit_time_for_ms(
-        #         self.time_up_speed)+(30*1000)
-        #     self.time_up_speed = self.timer.edit_ms_for_time(self.new_time)
-
         self.timer.displays_time(ms)
 
     def check_win_for_point(self):
-        # # print(self.player_1.score.points, self.point)
-        # # print(self.player_2.score.points, self.point)
         if self.player_1.score.points >= self.limit_point:
             return True, 1
         if self.player_2.score.points >= self.limit_point:
@@ -59,14 +49,16 @@ class Control():
         tm.sleep(0.5)
         if self.player_1.score.points > self.player_2.score.points:
             self.player_1.error = 0
-            self.player_2.error = error_calculator(self.player_2, self.ball, 1)
+            self.player_2.error = error_calculator(self.player_2,
+                                                   self.ball, 10)
 
             self.player_1.training = False
             self.player_2.training = True
 
         elif self.player_2.score.points > self.player_1.score.points:
             self.player_2.error = 0
-            self.player_1.error = error_calculator(self.player_1, self.ball, 1)
+            self.player_1.error = error_calculator(self.player_1,
+                                                   self.ball, 10)
 
             self.player_2.training = False
             self.player_1.training = True

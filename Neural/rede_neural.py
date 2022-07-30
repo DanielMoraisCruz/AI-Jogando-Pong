@@ -7,15 +7,15 @@ from Pong.globals import DISPLAY_SIZE
 
 
 class Initial_weights():
-    def __init__(self, file=NULL) -> None:
+    def __init__(self, player_file=NULL) -> None:
 
-        if file != NULL:
-            with open(file, 'rb') as arq:
-                self.weights_input_layer_1N = np.load(arq)
-                self.weights_input_layer_2N = np.load(arq)
-                self.weights_hidden_layer_1N = np.load(arq)
-                self.weights_hidden_layer_2N = np.load(arq)
-                self.output_weights = np.load(arq)
+        if player_file != NULL:
+            with open(player_file, 'rb') as file:
+                self.weights_input_layer_1N = np.load(file)
+                self.weights_input_layer_2N = np.load(file)
+                self.weights_hidden_layer_1N = np.load(file)
+                self.weights_hidden_layer_2N = np.load(file)
+                self.output_weights = np.load(file)
         else:
             self.weights_input_layer_1N = self.random_weights(4)
             self.weights_input_layer_2N = self.random_weights(4)
@@ -48,42 +48,44 @@ class Rede_neural(Thread):
 
         self.output_weights = self.initial_weights.output_weights
 
+    def activate(self, inputs, weights, activation_function):
+        self.sum_inputs_weights = np.sum(inputs * weights)
+        return activation_function(self.sum_inputs_weights)
+
     def feed_forward(self):
+        # 1
+        self.output_IL_1N = self.activate(self.inputs,
+                                          self.weights_IL_1N,
+                                          self.tan_hyper)
 
-        self.sum_inputs_weights_IL_1N = np.sum(self.inputs *
-                                               self.weights_IL_1N)
+        # 2
+        self.output_IL_2N = self.activate(self.inputs,
+                                          self.weights_IL_2N,
+                                          self.tan_hyper)
 
-        self.output_IL_1N = self.tan_hyper(self.sum_inputs_weights_IL_1N)
+        # 3
+        self.array_IL_1N = np.array([self.output_IL_1N,
+                                     self.output_IL_1N])
 
-        self.sum_inputs_weights_2N = np.sum(self.inputs * self.weights_IL_2N)
-        self.output_IL_2N = self.tan_hyper(self.sum_inputs_weights_2N)
+        self.output_HL_1N = self.activate(self.array_IL_1N,
+                                          self.weights_HL_1N,
+                                          self.tan_hyper)
 
-        self.outputs_array_IL_1N = np.array([self.output_IL_1N,
-                                             self.output_IL_1N])
+        # 4
+        self.array_IL_2N = np.array([self.output_IL_1N,
+                                     self.output_IL_2N])
 
-        self.sum_outputs_WH_1N = np.sum(self.outputs_array_IL_1N *
-                                        self.weights_HL_1N)
+        self.output_HL_2N = self.activate(self.array_IL_2N,
+                                          self.output_IL_2N,
+                                          self.tan_hyper)
 
-        self.output_HL_1N = self.tan_hyper(self.sum_outputs_WH_1N)
+        # 5
+        self.array_OW = np.array([self.output_HL_1N,
+                                  self.output_HL_2N])
 
-        self.outputs_array_IL_2N = np.array([self.output_IL_1N,
-                                             self.output_IL_2N])
-
-        self.sum_outputs_WH_2N = np.sum(self.outputs_array_IL_2N *
-                                        self.output_IL_2N)
-
-        self.output_HL_2N = self.tan_hyper(self.sum_outputs_WH_2N)
-
-        self.outputs_array_OW = np.array([self.output_HL_1N,
-                                          self.output_HL_2N])
-
-        self.sum_outputs_OW = np.sum(self.outputs_array_OW *
-                                     self.output_weights)
-
-        self.resultant = self.sigmoid(self.sum_outputs_OW)
-
-        # with open('ff_resultant.txt', 'a') as arq:
-        #     arq.write(str((self.resultant)) + "\n")
+        self.resultant = self.activate(self.array_OW,
+                                       self.output_weights,
+                                       self.sigmoid)
 
         return self.resultant
 
@@ -94,7 +96,7 @@ class Rede_neural(Thread):
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
 
-    def updates_weights(self, error, alpha=0.01):
+    def updates_weights(self, error, alpha=0.001):
 
         for i in range(len(self.initial_weights.output_weights)):
             if i == 0:
@@ -131,19 +133,7 @@ class Rede_neural(Thread):
             self.initial_weights.weights_input_layer_2N[i] += (
                 alpha * self.inputs[i] * error)
 
-        # print(self.resultant)
-
-        # with open('data_weights.txt', 'a') as arq:
-        #     arq.write(str((self.weights_IL_1N)) + " " +
-        #               str((self.weights_IL_2N)) + "\n" +
-        #               str((self.weights_HL_1N)) + " " +
-        #               str((self.weights_HL_2N)) + "\n" +
-        #               str((self.output_weights)) + "\n")
-#
-        # with open('data_resultant.txt', 'a') as arq:
-        #     arq.write(str((self.resultant)) + "\n")
-
 
 def error_calculator(player, ball, weights):
-    player.error = (player.player_pos_y-ball.ball_pos_y)/weights
+    player.error = (player.player_pos_y - ball.ball_pos_y)/weights
     return player.error

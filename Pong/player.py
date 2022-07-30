@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+
 import pygame
 from Neural.rede_neural import Initial_weights
 
@@ -37,19 +38,18 @@ class Player:
 
     def update(self, key):
         if self.type == 'right':
-            if key >= 0.9:  # key[pygame.K_w]:
+            if key >= 0.8:  # key[pygame.K_w]:
                 self.move(-1)
 
-            elif key <= 0.1:  # key[pygame.K_s]:
+            elif key <= 0.2:  # key[pygame.K_s]:
                 self.move(1)
 
         else:
-            if key >= 0.9:  # key[pygame.K_UP]:
+            if key >= 0.8:  # key[pygame.K_UP]:
                 self.move(-1)
 
-            elif key <= 0.1:  # key[pygame.K_DOWN]:
+            elif key <= 0.2:  # key[pygame.K_DOWN]:
                 self.move(1)
-
         self.img_rect_player.clamp_ip(WINDOW_RECT)
 
     def realize(self):

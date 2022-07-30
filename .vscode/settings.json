@@ -4,8 +4,28 @@
         "centerx",
         "centery",
         "colliderect",
+        "Contador",
+        "Controlador",
+        "Cria",
+        "Determina",
+        "direita",
+        "dois",
+        "erro",
+        "esquerda",
+        "esta",
+        "Eventos",
+        "Inicia",
+        "jogadores",
+        "jogando",
+        "Jogo",
         "matplotlib",
+        "passando",
         "pygame",
-        "pyplot"
-    ]
+        "pyplot",
+        "setando",
+        "tela",
+        "topo",
+        "variaveis"
+    ],
+    "cSpell.enabled": true
 }

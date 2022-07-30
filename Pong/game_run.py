@@ -1,5 +1,6 @@
 import numpy as np
 import pygame
+from matplotlib import pyplot as plt
 from Neural.rede_neural import Rede_neural, error_calculator
 
 from Pong.control import Control
@@ -27,15 +28,23 @@ class Game_run():
 
         # Determina-se o Controlador de Eventos do Jogo,
         # passando como variaveis os dois jogadores
+        self._limit_point = 5
+        self._speed_ball = 20
+        self._limit_speed = 50
+        self._file_1 = "rede_1.npy"
+        self._file_2 = "rede_2.npy"
         if HAVE_FILES:
-            self.control = Control(limit_point=10, speed_ball=5,
-                                   limit_speed=40,
-                                   file_1="rede_1.npy", file_2="rede_2.npy")
+            self.control = Control(self._limit_point, self._speed_ball,
+                                   self._limit_speed,
+                                   self._file_1, self._file_2)
         else:
-            self.control = Control(limit_point=10, speed_ball=5,
-                                   limit_speed=40)
+            self.control = Control(self._limit_point, self._speed_ball,
+                                   self._limit_speed)
 
         self.win = False
+        self.count_i = 0
+        self.salto = 10
+        self.multiplicador = 10
 
     def run_Pong(self):
         if (self.win):
@@ -47,6 +56,12 @@ class Game_run():
 
         self.key_player1 = self.rede_1.feed_forward()
         self.key_player2 = self.rede_2.feed_forward()
+
+        if self.count_i % self.salto == 0:
+            save_item(abs(self.key_player1*self.multiplicador),
+                      "resultants_1.txt")
+            save_item(abs(self.key_player2*self.multiplicador),
+                      "resultants_2.txt")
 
         self.control.player_1.realize()
         self.control.player_1.update(self.key_player1)
@@ -64,20 +79,25 @@ class Game_run():
         self.error_2 = error_calculator(self.control.player_2,
                                         self.control.ball, 100)
 
+        # print(self.error_1)
         if self.control.player_1.training:
-            print("player 1 esta jogando")
             self.rede_1.updates_weights(self.error_1)
+            if self.count_i % self.salto == 0:
+                save_item(abs(self.error_1*self.multiplicador),
+                          "errors_player_1.txt")
         else:
-            print("player 2 esta jogando")
             self.rede_2.updates_weights(self.error_2)
+            if self.count_i % self.salto == 0:
+                save_item(abs(self.error_2*self.multiplicador),
+                          "errors_player_2.txt")
+
+        self.count_i += 1
 
         self.time.tick(self.frames)
         self.control.time_events(pygame.time.get_ticks())
         self.control.counter_control()
 
         self.win_1, self.winier = self.control.check_win_for_point()
-
-        # print(self.control.ball.speed)
 
         if (self.win_1):
             if self.winier == 1:
@@ -102,8 +122,38 @@ class Game_run():
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                save_doc_weights(self.rede_1.initial_weights, "rede_1.npy")
-                save_doc_weights(self.rede_2.initial_weights, "rede_2.npy")
+                save_doc_weights(self.rede_1.initial_weights,
+                                 "rede_1.npy")
+                save_doc_weights(self.rede_2.initial_weights,
+                                 "rede_2.npy")
+
+                if HAVE_FILES:
+                    self.time_in_game = []
+                    with open("errors_player_1.txt", 'r') as file:
+                        arq_1 = file.readlines()
+                        arq_1 = [float(dado) for dado in arq_1]
+                    for i in range(len(arq_1)):
+                        self._time = self.control.timer.edit_ms_for_time(i)
+                        if self.count_i % self.salto == 0:
+                            self.time_in_game.append(self._time)
+                        else:
+                            self.time_in_game.append("")
+                    plt.plot(self.time_in_game, arq_1)
+                    plt.show()
+
+                    self.time_in_game = []
+                    with open("errors_player_2.txt", 'r') as file:
+                        arq_2 = file.readlines()
+                        arq_2 = [float(dado) for dado in arq_2]
+                    for i in range(len(arq_2)):
+                        self._time = self.control.timer.edit_ms_for_time(i)
+                        if self.count_i % self.salto == 0:
+                            self.time_in_game.append(self._time)
+                        else:
+                            self.time_in_game.append("")
+                    plt.plot(self.time_in_game, arq_2)
+                    plt.show()
+
                 self.running, self.playing = False, False
 
     def run_game(self):
@@ -118,9 +168,15 @@ def save_doc_weights(weights, name_file):
     weights_HL1N = weights.weights_hidden_layer_1N
     weights_HL2N = weights.weights_hidden_layer_2N
     output_weights = weights.output_weights
-    with open(name_file, 'wb') as arq:
-        np.save(arq, weights_IL1N)
-        np.save(arq, weights_IL2N)
-        np.save(arq, weights_HL1N)
-        np.save(arq, weights_HL2N)
-        np.save(arq, output_weights)
+
+    with open(name_file, 'wb') as file:
+        np.save(file, weights_IL1N)
+        np.save(file, weights_IL2N)
+        np.save(file, weights_HL1N)
+        np.save(file, weights_HL2N)
+        np.save(file, output_weights)
+
+
+def save_item(item, name_file):
+    with open(name_file, 'a') as file:
+        file.write(str((item)) + "\n")

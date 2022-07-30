@@ -66,13 +66,13 @@ class Ball:
             if self.right_width:
                 self.player_1.score.points += 1
                 self.player_1.error = 0
-                self.player_2.error = error_calculator(self.player_2, self, 5)
+                self.player_2.error = error_calculator(self.player_2, self, 10)
                 self.set_bola()
 
             if self.img_rect_ball.x <= 0:
                 self.player_2.score.points += 1
                 self.player_2.error = 0
-                self.player_1.error = error_calculator(self.player_2, self, 5)
+                self.player_1.error = error_calculator(self.player_2, self, 10)
                 self.set_bola()
 
     def collide_player(self, player):
@@ -80,20 +80,14 @@ class Ball:
         adjust = (self.rect_player[0]+1, self.rect_player[1]+1,
                   self.rect_player[2]+1, self.rect_player[3]+1)
 
-        adjust_1 = ((self.rect_player[0]+1), (self.rect_player[1]+1),
-                    (self.rect_player[2]+1), (self.rect_player[3]+1)/2)
-
         collided_player = self.img_rect_ball.colliderect(adjust)
-        collided_left_p = self.img_rect_ball.colliderect(adjust_1)
 
         if collided_player:
             self.speed_tuple[0] *= -1
-            if not(collided_left_p):
-                self.speed_tuple[1] *= -1
 
             if self.speed < self.limit_speed:
-                self.speed += 1
-                player.speed = self.speed * 1.5
+                self.speed += 2
+                player.speed = self.speed * 2
             self.collide_key = False
             player.error = 0
 
