@@ -44,7 +44,7 @@ class Game_run():
         self.win = False
         self.count_i = 0
         self.salto = 10
-        self.multiplicador = 10
+        self.multiplicador = 10 
 
     def run_Pong(self):
         if (self.win):
@@ -133,11 +133,7 @@ class Game_run():
                         arq_1 = file.readlines()
                         arq_1 = [float(dado) for dado in arq_1]
                     for i in range(len(arq_1)):
-                        self._time = self.control.timer.edit_ms_for_time(i)
-                        if self.count_i % self.salto == 0:
-                            self.time_in_game.append(self._time)
-                        else:
-                            self.time_in_game.append("")
+                        self.time_in_game.append(i)
                     plt.plot(self.time_in_game, arq_1)
                     plt.show()
 
@@ -146,11 +142,8 @@ class Game_run():
                         arq_2 = file.readlines()
                         arq_2 = [float(dado) for dado in arq_2]
                     for i in range(len(arq_2)):
-                        self._time = self.control.timer.edit_ms_for_time(i)
-                        if self.count_i % self.salto == 0:
-                            self.time_in_game.append(self._time)
-                        else:
-                            self.time_in_game.append("")
+                        self.time_in_game.append(i)
+                    
                     plt.plot(self.time_in_game, arq_2)
                     plt.show()
 
