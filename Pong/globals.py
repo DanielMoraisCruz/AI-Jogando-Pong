@@ -9,3 +9,4 @@ WINDOW = pygame.display.set_mode(DISPLAY_SIZE)
 WINDOW_RECT = WINDOW.get_rect()
 
 HAVE_FILES = True  # ,False  # ,
+# Caso queria treinar um novo conjunto de agentes Troque para False

@@ -34,6 +34,9 @@ class Ball:
                 return num
 
     def set_bola(self):
+        if self.speed > self.initial_speed:
+            save_item(self.speed, "speed_ball.txt")
+
         self.speed = self.initial_speed
         x = self.random()
         y = self.random()
@@ -46,9 +49,6 @@ class Ball:
         self.speed_tuple = [x, y]
 
         self.pos = list(WINDOW_RECT.center)
-
-        if self.speed >= self.limit_speed:
-            self.speed = self.initial_speed
 
     def wall_collider(self):
         self.bottom_height = (self.img_rect_ball.y >
@@ -63,16 +63,22 @@ class Ball:
             self.speed_tuple[0] *= -1
             self.collide_key = False
 
+            # Caso onde o Player 1 (Esquerda) marcou um ponto
             if self.right_width:
                 self.player_1.score.points += 1
-                self.player_1.error = 0
-                self.player_2.error = error_calculator(self.player_2, self, 10)
+                # PLayer 2 (Direita) é penalizado
+                self.player_2.error = error_calculator(self.player_2,
+                                                       self, 100)
+                # Reinicia a posição da bola
                 self.set_bola()
 
+            # Caso onde o Player 2 (Direita) marcou um ponto
             if self.img_rect_ball.x <= 0:
                 self.player_2.score.points += 1
-                self.player_2.error = 0
-                self.player_1.error = error_calculator(self.player_2, self, 10)
+                # PLayer 1 (Esquerda) é penalizado
+                self.player_1.error = error_calculator(self.player_2,
+                                                       self, 100)
+                # Reinicia a posição da bola
                 self.set_bola()
 
     def collide_player(self, player):
@@ -80,15 +86,17 @@ class Ball:
         adjust = (self.rect_player[0]+1, self.rect_player[1]+1,
                   self.rect_player[2]+1, self.rect_player[3]+1)
 
-        collided_player = self.img_rect_ball.colliderect(adjust)
+        self.collided_player = self.img_rect_ball.colliderect(adjust)
 
-        if collided_player:
+        if self.collided_player:
             self.speed_tuple[0] *= -1
 
             if self.speed < self.limit_speed:
-                self.speed += 2
-                player.speed = self.speed * 2
+                self.speed += 1
+                player.speed = self.speed
+
             self.collide_key = False
+
             player.error = 0
 
     def move(self):
@@ -106,3 +114,8 @@ class Ball:
 
     def realize(self):
         WINDOW.blit(self.image, self.img_rect_ball)
+
+
+def save_item(item, name_file):
+    with open(name_file, 'a') as file:
+        file.write(str((item)) + "\n")

@@ -16,7 +16,7 @@ class Score():
         self.text = self.font.render((f"{str(self.points)}"), 1, WHITE)
         self.text_pos = self.text.get_rect()
 
-        distance = 55
+        distance = 70
         if self.type == 'right':
             self.text_pos.centerx = WINDOW.get_width()/2 + distance
         else:

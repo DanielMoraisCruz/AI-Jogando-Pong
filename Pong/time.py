@@ -16,7 +16,7 @@ class Timer():
         self.text = self.font.render(self.time, 1, WHITE)
         self.text_pos = self.text.get_rect()
 
-        self.bar = self.font.render("|          |", 1, WHITE)
+        self.bar = self.font.render("|              |", 1, WHITE)
         self.bar_pos = self.bar.get_rect()
 
         self.bar_pos.centerx = WINDOW.get_width()/2
@@ -30,8 +30,12 @@ class Timer():
         self.time = (ms//1000)
         self.seconds = 0
         self.minutes = 0
+        self.horas = 0
         while self.time >= 60:
             self.minutes += 1
+            if self.minutes >= 60:
+                self.horas += 1
+                self.minutes = 0
             self.time -= 60
         self.seconds = self.time
 
@@ -39,11 +43,17 @@ class Timer():
             self.seconds = "0" + str(self.seconds)
         if (self.minutes < 10):
             self.minutes = "0" + str(self.minutes)
-        self.result_time = (f"{self.minutes}:{self.seconds}")
+        if (self.horas < 10):
+            self.horas = "0" + str(self.horas)
+
+        self.result_time = (f"{self.horas}:{self.minutes}:{self.seconds}")
         return self.result_time
 
     def edit_time_for_ms(self, time):
-        self.minutes = int(time[0:1])
-        self.seconds = int(time[3:4])
-        self.ms = (self.minutes*60+self.seconds)*1000
+        self.horas = int(time[0:1])
+        self.minutes = int(time[3:4])
+        self.seconds = int(time[6:7])
+        self.minutes += self.horas*60
+        self.seconds += self.minutes*60
+        self.ms = self.seconds*1000
         return self.ms
