@@ -45,7 +45,7 @@ class Rede_neural():
         self.weights_HL_1N = self.initial_weights.weights_hidden_layer_1N
         self.weights_HL_2N = self.initial_weights.weights_hidden_layer_2N
 
-        # Pesos da camada de saida
+        # Pesos da camada de Saída
         self.output_weights = self.initial_weights.output_weights
 
     def activate(self, inputs, weights, activation_function):
@@ -65,27 +65,27 @@ class Rede_neural():
                                           self.weights_IL_2N,
                                           tan_hyper)
 
-        # Criando array com saida do 1N e 2N
+        # Criando array com saída do 1N e 2N
         self.array_IL_1N_2N = np.array([self.output_IL_1N,
                                         self.output_IL_2N])
 
-        # Inserindo as saidas de 1N_2N e os pesos do HL_1N na
+        # Inserindo as saídas de 1N_2N e os pesos do HL_1N na
         # função de ativação
         self.output_HL_1N = self.activate(self.array_IL_1N_2N,
                                           self.weights_HL_1N,
                                           tan_hyper)
 
-        # Inserindo as saidas de 1N_2N e os pesos do HL_2N na
+        # Inserindo as saídas de 1N_2N e os pesos do HL_2N na
         # função de ativação
         self.output_HL_2N = self.activate(self.array_IL_1N_2N,
                                           self.output_IL_2N,
                                           tan_hyper)
 
-        # Criando array com saida do HL_1N e HL_2N
+        # Criando array com saída do HL_1N e HL_2N
         self.array_OW = np.array([self.output_HL_1N,
                                   self.output_HL_2N])
 
-        # Inserindo as saidas dos 1N e 2N Ocultos e os
+        # Inserindo as saídas dos 1N e 2N Ocultos e os
         # pesos do Neurônio de Saida na função de ativação
         self.resultant = self.activate(self.array_OW,
                                        self.output_weights,
@@ -95,7 +95,7 @@ class Rede_neural():
 
     def updates_weights(self, error, alpha=0.001):
 
-        # Faz a alteração dos pesos do Neurônio da camada de saida
+        # Faz a alteração dos pesos do Neurônio da camada de saída
         for i in range(len(self.initial_weights.output_weights)):
             if i == 0:
                 self.input = self.output_HL_1N
