@@ -1,10 +1,14 @@
+# This code is the main file of the Pong project, here the game_run function
+# is called and the game starts
+
 from Pong.game_run import Game_run
 
 
 def main():
-    # O numero de fps define o quão rápido a IA vai treinar
-    game = Game_run(fps=500)
+    # The number of fps defines how fast the AI will train
+    game: Game_run = Game_run(fps=200)
     game.run_game()
 
 
-main()
+if __name__ == '__main__':
+    main()

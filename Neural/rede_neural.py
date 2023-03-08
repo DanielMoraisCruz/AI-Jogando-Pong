@@ -1,26 +1,33 @@
 from random import uniform
 
 import numpy as np
+
 from Pong.globals import DISPLAY_SIZE
 
 
 class Initial_weights():
+    # Constructor
     def __init__(self, player_file=0) -> None:
+        # If player_file is not empty
         if player_file != 0:
+            # Open the file and save the weights in the following variables
             with open(player_file, 'rb') as file:
                 self.weights_input_layer_1N = np.load(file)
                 self.weights_input_layer_2N = np.load(file)
                 self.weights_hidden_layer_1N = np.load(file)
                 self.weights_hidden_layer_2N = np.load(file)
                 self.output_weights = np.load(file)
+        # If player_file is empty
         else:
+            # Create random weights for each variable
             self.weights_input_layer_1N = self.random_weights(4)
             self.weights_input_layer_2N = self.random_weights(4)
             self.weights_hidden_layer_1N = self.random_weights(2)
             self.weights_hidden_layer_2N = self.random_weights(2)
             self.output_weights = self.random_weights(2)
 
-    def random_weights(self, n):
+    # Function to generate random weights
+    def random_weights(self, n: int) -> np.ndarray:
         return np.array([uniform(-1, 1) for i in range(n)])
 
 
