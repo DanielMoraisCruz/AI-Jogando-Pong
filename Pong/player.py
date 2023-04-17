@@ -1,8 +1,8 @@
 from asyncio.windows_events import NULL
 
 import pygame
-from Neural.rede_neural import Initial_weights
 
+from Neural.rede_neural import Initial_weights
 from Pong.globals import DISPLAY_SIZE, WHITE, WINDOW, WINDOW_RECT
 from Pong.score import Score
 
@@ -34,7 +34,7 @@ class Player:
 
         self.player_pos_y = self.img_rect_player.centery
 
-    def update(self, key, player=3):
+    def update(self, key, player: int = 3):
 
         if player == 1:  # Caso1 de Player Humano
             if key[pygame.K_w]:

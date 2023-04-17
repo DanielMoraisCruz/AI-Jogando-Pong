@@ -62,7 +62,7 @@ class Game_run():
         # passando como variaveis os dois jogadores
         self._limit_point = 12
         self._speed_ball = 1
-        self._limit_speed = 40  # A maior velosidade alcançada
+        self._limit_speed = 39  # A maior velosidade alcançada
         self._file_1 = "rede_1.npy"
         self._file_2 = "rede_2.npy"
         if HAVE_FILES:
