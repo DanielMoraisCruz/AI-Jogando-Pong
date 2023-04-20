@@ -28,5 +28,10 @@
         "topo",
         "variaveis"
     ],
-    "cSpell.enabled": true
+    "cSpell.enabled": true,
+    "python.analysis.typeCheckingMode": "off",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none"
 }
