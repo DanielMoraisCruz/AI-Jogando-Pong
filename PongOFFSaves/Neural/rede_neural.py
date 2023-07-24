@@ -108,7 +108,7 @@ class Rede_neural():
                 inp = out_2
             inputs_weights[i] += (alpha_ * inp * error_)
 
-    def updates_weights(self, error, alpha=0.001):
+    def updates_weights(self, error, alpha=0.00001):
 
         # Faz a alteração dos pesos do Neurônio da camada de saída
         self.norma_upw(

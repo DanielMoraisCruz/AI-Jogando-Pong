@@ -7,7 +7,7 @@ from Pong.control import Control
 from Pong.globals import BLACK, DISPLAY_SIZE, HAVE_FILES, PLOT_RESULTS, WINDOW
 
 
-def save_doc_weights(weights, name_file):
+def save_doc_weights(weights, name_file: str):
     weights_IL1N = weights.weights_input_layer_1N
     weights_IL2N = weights.weights_input_layer_2N
     weights_HL1N = weights.weights_hidden_layer_1N
@@ -62,7 +62,7 @@ class Game_run():
         # passando como variaveis os dois jogadores
         self._limit_point = 12
         self._speed_ball = 1
-        self._limit_speed = 39  # A maior velocidade alcançada
+        self._limit_speed = 100  # A maior velocidade alcançada
         self._file_1 = "SAVES/rede_1.npy"
         self._file_2 = "SAVES/rede_2.npy"
         if HAVE_FILES:
