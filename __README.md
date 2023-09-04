@@ -3,9 +3,7 @@
 
 # Sobre o projeto
 
-Projeto desenvolvido para a diciplina de Inteligência Artificial do curso de Ciência da Computação da Universidade Federal do Espirito Santo (UFES Campus Ceunes).
 
-O projeto consiste em uma rede neural que aprende a jogar Pong, um jogo de Atari, utilizando o algoritmo de aprendizado por reforço.
 
 ## Pong
 
