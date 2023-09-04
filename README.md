@@ -93,7 +93,9 @@ $ yarn start
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE) file.
 
 
-Made with :heart: by <a href="https://github.com/DanielMoraisCruz" target="_blank">Daniel Cruz</a>
+Made with :heart: by <a href="https://github.com/DanielMoraisCruz" target="_blank">Daniel Morais Cruz</a>
+
+https://www.linkedin.com/in/daniel-m-cruz/
 
 &#xa0;
 
