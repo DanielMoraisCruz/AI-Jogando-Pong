@@ -1,6 +1,7 @@
 from random import uniform
 
 import numpy as np
+
 from Pong.globals import DISPLAY_SIZE
 
 
@@ -108,7 +109,7 @@ class Rede_neural():
                 inp = out_2
             inputs_weights[i] += (alpha_ * inp * error_)
 
-    def updates_weights(self, error, alpha=0.00001):
+    def updates_weights(self, error, alpha=0.005):
 
         # Faz a alteração dos pesos do Neurônio da camada de saída
         self.norma_upw(

@@ -3,7 +3,7 @@ import time as tm
 from Pong.ball import Ball
 from Pong.globals import DISPLAY_SIZE
 from Pong.player import Player
-from time_1 import Timer
+from Pong.timer import Timer
 
 
 class Control():
