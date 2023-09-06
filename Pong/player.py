@@ -32,23 +32,11 @@ class Player:
 
         self.player_pos_y = self.img_rect_player.centery
 
-    def update(self, key, player: int = 3):
-
-        if player == 1:  # Caso1 de Player Humano
-            if key[pygame.K_w]:
-                self.move(-1)
-            elif key[pygame.K_s]:
-                self.move(1)
-        elif player == 2:  # Caso2 de Player Humano
-            if key[pygame.K_UP]:
-                self.move(-1)
-            elif key[pygame.K_DOWN]:
-                self.move(1)
-        else:  # Caso com agente inteligente
-            if key >= 0.8:
-                self.move(-1)
-            elif key <= 0.2:
-                self.move(1)
+    def update(self, key):
+        if key >= 0.8:
+            self.move(-1)
+        elif key <= 0.2:
+            self.move(1)
 
         self.img_rect_player.clamp_ip(WINDOW_RECT)
 

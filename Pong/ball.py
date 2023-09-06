@@ -1,8 +1,8 @@
 import random
 
 import pygame
-from Neural.rede_neural import error_calculator
 
+from Neural.rede_neural import error_calculator
 from Pong.globals import WHITE, WINDOW, WINDOW_RECT
 
 
@@ -34,8 +34,8 @@ class Ball:
                 return num
 
     def set_bola(self):
-        if self.speed > self.initial_speed:
-            save_item(self.speed, "SAVES/speed_ball.txt")
+        # if self.speed > self.initial_speed:
+        #     save_item(self.speed, "SAVES/speed_ball.txt")
 
         self.speed = self.initial_speed
         x = self.random()

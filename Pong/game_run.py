@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 from Neural.rede_neural import Rede_neural, error_calculator
 from Pong.control import Control
-from Pong.globals import BLACK, DISPLAY_SIZE, HAVE_FILES, PLOT_RESULTS, WINDOW
+from Pong.globals import BLACK, DISPLAY_SIZE, WINDOW
 
 
 def save_doc_weights(weights, name_file: str):
@@ -25,6 +25,16 @@ def save_doc_weights(weights, name_file: str):
 def save_item(item, name_file):
     with open(name_file, 'a') as file:
         file.write(str((item)) + "\n")
+
+
+def found_file(nome):
+    try:
+        a = open(nome, 'rt')
+        a.close()
+    except FileNotFoundError:
+        return False
+    else:
+        return True
 
 
 def graphic_plot(file):
@@ -65,13 +75,13 @@ class Game_run():
         self._limit_speed = 100  # A maior velocidade alcançada
         self._file_1 = "SAVES/rede_1.npy"
         self._file_2 = "SAVES/rede_2.npy"
-        if HAVE_FILES:
+
+        if found_file(self._file_1) and found_file(self._file_2):
             self.control = Control(self._limit_point, self._speed_ball,
                                    self._limit_speed,
                                    self._file_1, self._file_2)
         else:
-            self.control = Control(self._limit_point,
-                                   self._speed_ball,
+            self.control = Control(self._limit_point, self._speed_ball,
                                    self._limit_speed)
 
         self.win = False
@@ -79,8 +89,6 @@ class Game_run():
         self.count_i = 0
         self.salto = 10
         self.multi = 10
-
-        self.game_type = (False, False)
 
     def run_Pong(self):
         if (self.win):
@@ -106,24 +114,19 @@ class Game_run():
         self.error_2 = error_calculator(self.control.player_2,
                                         self.control.ball, 1000)
 
-        if self.count_i % self.salto == 0:
-            save_item(abs(self.key_player1*self.multi),
-                      "SAVES/resultants_1.txt")
-            save_item(abs(self.key_player2*self.multi),
-                      "SAVES/resultants_2.txt")
+        # if self.count_i % self.salto == 0:
+        #     save_item(abs(self.key_player1*self.multi),
+        #               "SAVES/resultants_1.txt")
+        #     save_item(abs(self.key_player2*self.multi),
+        #               "SAVES/resultants_2.txt")
 
+        # Atualização dos jogadores e da bola
+        # com base nos valores de entrada
         self.control.player_1.realize()
-
-        if self.game_type[0]:
-            self.control.player_1.update(pygame.key.get_pressed(), 1)
-        else:
-            self.control.player_1.update(self.key_player1)
+        self.control.player_1.update(self.key_player1)
 
         self.control.player_2.realize()
-        if self.game_type[1]:
-            self.control.player_2.update(pygame.key.get_pressed(), 2)
-        else:
-            self.control.player_2.update(self.key_player2)
+        self.control.player_2.update(self.key_player2)
 
         self.control.ball.realize()
         self.control.ball.update()
@@ -131,12 +134,13 @@ class Game_run():
         self.rede_1.updates_weights(self.error_1)
         self.rede_2.updates_weights(self.error_2)
 
-        if self.count_i % self.salto == 0:
-            save_item(abs(self.error_2*self.multi),
-                      "SAVES/errors_player_2.txt")
-            save_item(abs(self.error_1*self.multi),
-                      "SAVES/errors_player_1.txt")
-        self.count_i += 1
+        # Cria e atualiza o erro do jogador 1 e 2
+        # if self.count_i % self.salto == 0:
+        #     save_item(abs(self.error_2*self.multi),
+        #               "SAVES/errors_player_2.txt")
+        #     save_item(abs(self.error_1*self.multi),
+        #               "SAVES/errors_player_1.txt")
+        # self.count_i += 1
 
         self.time.tick(self.frames)
         self.control.time_events(pygame.time.get_ticks())
@@ -166,16 +170,16 @@ class Game_run():
 
     def check_events(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.constants.QUIT:
                 save_doc_weights(self.rede_1.initial_weights,
                                  "SAVES/rede_1.npy")
                 save_doc_weights(self.rede_2.initial_weights,
                                  "SAVES/rede_2.npy")
 
-                if HAVE_FILES and PLOT_RESULTS:
-                    graphic_plot("SAVES/errors_player_1.txt")
-                    graphic_plot("SAVES/errors_player_2.txt")
-                    graphic_plot("SAVES/speed_ball.txt")
+                # if PLOT_RESULTS:
+                #     graphic_plot("SAVES/errors_player_1.txt")
+                #     graphic_plot("SAVES/errors_player_2.txt")
+                #     graphic_plot("SAVES/speed_ball.txt")
 
                 self.running, self.playing = False, False
 
