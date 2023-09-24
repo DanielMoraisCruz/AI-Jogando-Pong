@@ -170,7 +170,7 @@ class Game_run():
 
     def check_events(self):
         for event in pygame.event.get():
-            if event.type == pygame.constants.QUIT:
+            if event.type == pygame.QUIT:
                 save_doc_weights(self.rede_1.initial_weights,
                                  "SAVES/rede_1.npy")
                 save_doc_weights(self.rede_2.initial_weights,

@@ -4,7 +4,7 @@ is called and the game starts"""
 from Pong.game_run import Game_run  # Import the game_run class
 
 # The number of fps defines how fast the AI will train
-FPS = 400
+FPS = 60
 
 
 def main():
