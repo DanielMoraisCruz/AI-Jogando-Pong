@@ -84,9 +84,11 @@ class Rede_neural():
 
         # Inserindo as saídas de 1N_2N e os pesos do HL_2N na
         # função de ativação
-        self.output_HL_2N = self.activate(self.array_IL_1N_2N,
-                                          self.output_IL_2N,
-                                          tan_hyper)
+        self.output_HL_2N = self.activate(
+            self.array_IL_1N_2N,
+            self.weights_HL_2N,
+            tan_hyper
+        )
 
         # Criando array com saída do HL_1N e HL_2N
         self.array_OW = np.array([self.output_HL_1N,
